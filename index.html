@@ -1,0 +1,768 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Établi · Atelier média</title>
+<style>
+:root{--paper:#f3eee6;--ink:#1b1916;--card:#fffcf7;--line:#e3dacd;--mute:#6f675e;--copper:#c0562a;--on-copper:#fff8f3;--pine:#234237;--on-ink:#f6f1ea}
+@media (prefers-color-scheme:dark){:root{--paper:#161412;--ink:#f1ebe2;--card:#211e1b;--line:#38332d;--mute:#a89f93;--copper:#e0794a;--on-copper:#1b1916;--pine:#8fc4ac;--on-ink:#161412}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 "Outfit",system-ui,-apple-system,"Segoe UI",sans-serif}
+h1,.brand{font-family:"Fraunces",Georgia,serif;font-weight:600}
+header{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;background:var(--paper);border-bottom:1px solid var(--line)}
+.brand{font-size:22px;line-height:1}.sub{font-size:12px;color:var(--mute)}
+#count{font-size:12px;color:var(--pine)}
+.shell{display:flex;flex-direction:column}
+nav{display:flex;gap:6px;overflow-x:auto;padding:10px 12px;border-bottom:1px solid var(--line)}
+nav button{flex:none;display:flex;flex-direction:column;align-items:flex-start;min-height:44px;padding:6px 12px;border:0;border-radius:12px;background:none;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+nav button small{display:none;font-size:12px;color:var(--mute)}
+nav button[aria-current=page]{background:var(--ink);color:var(--on-ink)}
+nav button[aria-current=page] small{color:var(--on-ink);opacity:.8}
+nav button:hover:not([aria-current=page]){background:var(--card)}
+main{padding:20px 16px 60px;min-width:0;flex:1}
+@media(min-width:900px){.shell{flex-direction:row;align-items:flex-start}nav{flex-direction:column;width:250px;flex:none;position:sticky;top:61px;border-bottom:0;border-right:1px solid var(--line);padding:14px 12px;overflow:visible}nav button small{display:block}main{padding:28px 32px 60px}}
+section.sheet{max-width:760px}
+h1{font-size:30px;line-height:1.15;margin:0}
+.lede{margin:8px 0 0;max-width:600px;font-size:14px;color:var(--mute)}
+.body{margin-top:22px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;border:0;border-radius:99px;background:var(--copper);color:var(--on-copper);font:inherit;font-weight:500;cursor:pointer;width:100%}
+@media(min-width:600px){.btn{width:auto}}
+.btn:disabled{opacity:.5;cursor:default}
+.ghost{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border:1px solid var(--ink);border-radius:99px;background:none;color:var(--ink);font:inherit;cursor:pointer}
+.pill{min-height:44px;padding:0 16px;border:1px solid var(--line);border-radius:99px;background:var(--card);color:var(--ink);font:inherit;cursor:pointer;flex:none}
+.pill.on{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.scroll{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-top:10px}
+input[type=text],input[type=url],select,textarea{width:100%;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);font:inherit}
+textarea{min-height:160px;resize:vertical}
+label.f{display:block;margin-top:16px}label.f>span{display:block;margin-bottom:6px;font-weight:500;font-size:14px}
+.drop{margin-top:14px;padding:22px 16px;border:1px dashed var(--line);border-radius:16px;background:var(--card);text-align:center}
+.drop.over{border-color:var(--copper)}
+.drop p{margin:0 0 10px}
+.note{margin:12px 0 0;font-size:14px;color:var(--mute)}.note.ok{color:var(--pine)}.note.err{color:var(--copper)}
+.card{margin-top:16px;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
+.card img,.card video,.card iframe{display:block;width:100%;max-height:300px;object-fit:contain;background:var(--paper);border-radius:10px}
+.card audio{width:100%}
+ul.list{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+ul.list li{display:flex;align-items:center;gap:8px;padding:8px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+ul.list li span.n{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ul.list img{width:44px;height:44px;border-radius:8px;object-fit:cover}
+.ic{width:44px;height:44px;border:0;border-radius:99px;background:none;color:var(--ink);font:inherit;font-size:16px;cursor:pointer}
+.ic:disabled{opacity:.3}
+.grid{display:grid;gap:12px;grid-template-columns:1fr;margin-top:18px}
+@media(min-width:600px){.grid{grid-template-columns:1fr 1fr}}
+.grid .card{margin:0;padding:0;overflow:hidden}.grid .meta{display:flex;align-items:center;gap:6px;padding:10px}
+.meta .t{flex:1;min-width:0}.meta .t b{display:block;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.meta .t small{color:var(--mute)}
+.chosen{display:flex;align-items:center;gap:10px;margin-top:12px;padding:0 12px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.chosen span{flex:1;min-width:0;padding:11px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chosen button{min-height:44px;border:0;background:none;color:var(--mute);font:inherit;cursor:pointer}
+iframe.web{width:100%;height:70vh;margin-top:14px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
+.warn{margin-top:14px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--card);font-size:14px}
+</style>
+</head>
+<body>
+<header>
+  <div><div class="brand">Établi</div><div class="sub">Atelier média</div></div>
+  <div id="count">Session vide</div>
+</header>
+<div class="shell">
+  <nav id="nav" aria-label="Outils"></nav>
+  <main id="main"></main>
+</div>
+
+<script>
+"use strict";
+/* ---------- outils de base ---------- */
+function h(tag, attrs, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (k === "class") e.className = v;
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else if (v === true) e.setAttribute(k, "");
+    else if (v !== false && v != null) e.setAttribute(k, v);
+  }
+  for (const kid of kids.flat()) {
+    if (kid == null || kid === false) continue;
+    e.append(kid.nodeType ? kid : document.createTextNode(kid));
+  }
+  return e;
+}
+const uid = () => Math.random().toString(36).slice(2) + Date.now().toString(36);
+const msg = (e) => (e && e.message) || "Ça n’a pas marché. Réessaie.";
+const fmt = (n) => n < 1024 ? n + " o" : n < 1048576 ? Math.round(n / 1024) + " Ko" : (n / 1048576).toFixed(1) + " Mo";
+const baseName = (n) => n.replace(/\.[^.]+$/, "");
+const KIND = { image: "Image", video: "Vidéo", audio: "Audio", pdf: "PDF", text: "Texte" };
+function kindFrom(name, type) {
+  const l = name.toLowerCase();
+  if (type.startsWith("image/") || /\.(png|jpe?g|gif|webp)$/.test(l)) return "image";
+  if (type.startsWith("video/") || /\.(mp4|webm|mov|mkv|m4v)$/.test(l)) return "video";
+  if (type.startsWith("audio/") || /\.(mp3|wav|m4a|ogg|aac)$/.test(l)) return "audio";
+  if (type === "application/pdf" || l.endsWith(".pdf")) return "pdf";
+  return "text";
+}
+function ext(name, type, fb) {
+  const m = /\.([a-z0-9]{1,5})$/i.exec(name);
+  if (m) return m[1].toLowerCase();
+  if (type.includes("webm")) return "webm";
+  if (type.includes("quicktime")) return "mov";
+  if (type.includes("wav")) return "wav";
+  if (type.includes("mpeg")) return "mp3";
+  if (type.includes("mp4")) return "mp4";
+  if (type.includes("ogg")) return "ogg";
+  return fb;
+}
+function saveAs(blob, name) {
+  const url = URL.createObjectURL(blob);
+  const a = h("a", { href: url, download: name });
+  document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+const scripts = {};
+function loadScript(url) {
+  if (!scripts[url]) scripts[url] = new Promise((ok, ko) => {
+    const s = h("script", { src: url });
+    s.onload = ok;
+    s.onerror = () => { delete scripts[url]; ko(new Error("Impossible de charger une bibliothèque (connexion internet nécessaire).")); };
+    document.head.append(s);
+  });
+  return scripts[url];
+}
+
+/* ---------- bibliothèque ---------- */
+const lib = { items: [] };
+function addMedia(name, blob) {
+  const item = { id: uid(), name, kind: kindFrom(name, blob.type), blob, url: URL.createObjectURL(blob) };
+  lib.items.unshift(item);
+  const n = lib.items.length;
+  document.getElementById("count").textContent = n === 1 ? "1 fichier" : n + " fichiers";
+  return item;
+}
+function removeMedia(id) {
+  const f = lib.items.find((i) => i.id === id);
+  if (f) URL.revokeObjectURL(f.url);
+  lib.items = lib.items.filter((i) => i.id !== id);
+  document.getElementById("count").textContent = lib.items.length === 0 ? "Session vide" : lib.items.length + " fichier(s)";
+}
+function frame(item) {
+  if (item.kind === "image") return h("img", { src: item.url, alt: item.name });
+  if (item.kind === "video") return h("video", { src: item.url, controls: true });
+  if (item.kind === "audio") return h("audio", { src: item.url, controls: true });
+  if (item.kind === "pdf") return h("iframe", { src: item.url, title: item.name, style: "height:320px;border:0" });
+  return h("p", { class: "note" }, fmt(item.blob.size));
+}
+function resultCard(item) {
+  return h("div", { class: "card" },
+    h("p", { class: "note ok", style: "margin-top:0" }, "Ajouté à la bibliothèque · " + item.name),
+    h("div", { style: "margin-top:10px" }, frame(item)),
+    h("div", { class: "row" }, h("button", { class: "btn", onclick: () => saveAs(item.blob, item.name) }, "Télécharger")));
+}
+
+/* ---------- composants ---------- */
+function sheet(title, lede, ...kids) {
+  return h("section", { class: "sheet" }, h("h1", null, title), h("p", { class: "lede" }, lede), h("div", { class: "body" }, kids));
+}
+function field(label, control) { return h("label", { class: "f" }, h("span", null, label), control); }
+function nameField(def) {
+  const i = h("input", { type: "text", value: def, maxlength: 60, "aria-label": "Nom du fichier", placeholder: def });
+  return { node: field("Nom du fichier", i), get() {
+    const v = i.value.trim().replace(/[\\/:*?"<>|]+/g, "-").replace(/\.(pdf|png|mp3|mp4|wav|txt)$/i, "").slice(0, 60);
+    return v || def; } };
+}
+function select(options, value, onchange) {
+  const s = h("select", { onchange: (e) => onchange(e.target.value) },
+    options.map(([v, l]) => h("option", { value: v }, l)));
+  s.value = value; return s;
+}
+function drop(accept, multiple, label, onFiles) {
+  const input = h("input", { type: "file", accept, multiple, style: "display:none", onchange: (e) => { const f = [...e.target.files]; if (f.length) onFiles(f); e.target.value = ""; } });
+  const box = h("div", { class: "drop",
+    ondragover: (e) => { e.preventDefault(); box.classList.add("over"); },
+    ondragleave: () => box.classList.remove("over"),
+    ondrop: (e) => { e.preventDefault(); box.classList.remove("over"); const f = [...e.dataTransfer.files]; if (f.length) onFiles(multiple ? f : f.slice(0, 1)); } },
+    h("p", null, label), h("button", { class: "ghost", type: "button", onclick: () => input.click() }, "Parcourir"), input);
+  return box;
+}
+function libPicker(kinds, onPick) {
+  const wrap = h("div");
+  const items = lib.items.filter((i) => kinds.includes(i.kind));
+  if (!items.length) return wrap;
+  wrap.append(h("p", { class: "note" }, "Depuis la bibliothèque"),
+    h("div", { class: "scroll" }, items.map((i) => h("button", { class: "pill", type: "button", style: "max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap", onclick: () => onPick(i) }, i.name))));
+  return wrap;
+}
+/* Un seul fichier choisi */
+function singlePick(accept, label, kinds) {
+  const state = { pick: null };
+  const chosen = h("div");
+  const set = (p) => {
+    state.pick = p; chosen.replaceChildren();
+    if (p) chosen.append(h("div", { class: "chosen" }, h("span", null, p.name + " · " + fmt(p.blob.size)), h("button", { type: "button", onclick: () => set(null) }, "Retirer")));
+  };
+  const node = h("div", null,
+    drop(accept, false, label, (f) => set({ name: f[0].name, blob: f[0] })),
+    libPicker(kinds, (i) => set({ name: i.name, blob: i.blob })), chosen);
+  return { node, state };
+}
+/* Liste ordonnée de fichiers */
+function multiPick(accept, label, kinds, limit) {
+  const state = { items: [] };
+  const list = h("div");
+  const draw = () => {
+    list.replaceChildren();
+    if (!state.items.length) return;
+    list.append(h("ul", { class: "list" }, state.items.map((it, i) => h("li", null,
+      it.blob.type.startsWith("image/") ? h("img", { src: it.url, alt: "" }) : h("span", { style: "width:44px;height:44px;display:grid;place-items:center;font-size:11px;color:var(--mute)" }, "fichier"),
+      h("span", { class: "n" }, it.name),
+      h("button", { class: "ic", "aria-label": "Monter", disabled: i === 0, onclick: () => { move(i, -1); } }, "↑"),
+      h("button", { class: "ic", "aria-label": "Descendre", disabled: i === state.items.length - 1, onclick: () => { move(i, 1); } }, "↓"),
+      h("button", { class: "ic", "aria-label": "Retirer", onclick: () => { const [r] = state.items.splice(i, 1); if (r.owned) URL.revokeObjectURL(r.url); draw(); } }, "✕")))));
+  };
+  const move = (i, d) => { const t = i + d; if (t < 0 || t >= state.items.length) return; const [x] = state.items.splice(i, 1); state.items.splice(t, 0, x); draw(); };
+  const add = (name, blob, url, owned) => { if (state.items.length < limit) { state.items.push({ name, blob, url, owned }); draw(); } };
+  const clear = () => { state.items.forEach((r) => r.owned && URL.revokeObjectURL(r.url)); state.items = []; draw(); };
+  const node = h("div", null,
+    drop(accept, true, label, (files) => files.forEach((f) => add(f.name, f, URL.createObjectURL(f), true))),
+    libPicker(kinds, (i) => add(i.name, i.blob, i.url, false)), list);
+  return { node, state, clear, add };
+}
+async function runTask(btn, out, task) {
+  btn.disabled = true; out.replaceChildren();
+  const st = h("p", { class: "note" }); out.append(st);
+  try {
+    const made = await task((t) => { st.textContent = t; });
+    st.remove();
+    if (made) out.append(resultCard(addMedia(made.name, made.blob)));
+  } catch (e) { st.className = "note err"; st.textContent = msg(e); }
+  finally { btn.disabled = false; }
+}
+function textResult(text, name, out) {
+  out.replaceChildren(h("textarea", { readonly: true, "aria-label": "Résultat" }, text),
+    h("div", { class: "row" },
+      h("button", { class: "ghost", onclick: async (e) => { try { await navigator.clipboard.writeText(text); e.target.textContent = "Copié"; } catch { e.target.textContent = "Sélectionne le texte"; } } }, "Copier"),
+      h("button", { class: "ghost", onclick: (e) => { addMedia(name, new Blob([text], { type: "text/plain" })); e.target.textContent = "Ajouté"; } }, "Garder dans la bibliothèque")));
+}
+
+/* ---------- moteur vidéo (ffmpeg.wasm) ---------- */
+const FF_BASE = "https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd";
+const FF_CORE = "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd";
+let ffPromise = null, ffReport = null, ffQueue = Promise.resolve();
+async function getFF(onStatus) {
+  if (!ffPromise) ffPromise = (async () => {
+    onStatus("Téléchargement du moteur vidéo (une seule fois)…");
+    await loadScript(FF_BASE + "/ffmpeg.js");
+    await loadScript("https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/umd/index.js");
+    const ff = new FFmpegWASM.FFmpeg();
+    ff.on("progress", ({ progress }) => { if (ffReport && Number.isFinite(progress)) ffReport(Math.max(0, Math.min(1, progress))); });
+    const { toBlobURL } = FFmpegUtil;
+    await ff.load({
+      coreURL: await toBlobURL(FF_CORE + "/ffmpeg-core.js", "text/javascript"),
+      wasmURL: await toBlobURL(FF_CORE + "/ffmpeg-core.wasm", "application/wasm"),
+      classWorkerURL: await toBlobURL(FF_BASE + "/814.ffmpeg.js", "text/javascript"),
+    });
+    return ff;
+  })().catch((e) => { ffPromise = null; throw new Error("Le moteur vidéo n’a pas pu démarrer : " + msg(e)); });
+  return ffPromise;
+}
+/* files: [{name, blob}] (noms déjà sûrs), attempts: liste d'arguments à essayer */
+function ffRun(files, attempts, out, mime, label, onStatus, failMsg) {
+  const task = async () => {
+    const ff = await getFF(onStatus);
+    onStatus(label + "…");
+    ffReport = (v) => onStatus(label + "… " + Math.round(v * 100) + " %");
+    try {
+      for (const f of files) await ff.writeFile(f.name, await FFmpegUtil.fetchFile(f.blob));
+      let code = 1;
+      for (const args of attempts) { code = await ff.exec(args); if (code === 0) break; }
+      if (code !== 0) throw new Error(failMsg);
+      const data = await ff.readFile(out);
+      return new Blob([data], { type: mime });
+    } finally {
+      ffReport = null;
+      for (const f of files) await ff.deleteFile(f.name).catch(() => {});
+      await ff.deleteFile(out).catch(() => {});
+    }
+  };
+  const run = ffQueue.then(task, task);
+  ffQueue = run.then(() => {}, () => {});
+  return run;
+}
+
+/* ---------- panneaux ---------- */
+function LibraryPanel() {
+  const out = h("div");
+  const list = h("div");
+  const draw = () => {
+    list.replaceChildren();
+    if (!lib.items.length) { list.append(h("p", { class: "note", style: "margin-top:24px" }, "Encore vide. Les résultats des outils arriveront ici.")); return; }
+    list.append(h("div", { class: "grid" }, lib.items.map((it) => h("div", { class: "card" },
+      h("div", { style: "background:var(--paper)" }, frame(it)),
+      h("div", { class: "meta" },
+        h("div", { class: "t" }, h("b", null, it.name), h("small", null, KIND[it.kind] + " · " + fmt(it.blob.size))),
+        h("button", { class: "ic", style: "border:1px solid var(--line)", "aria-label": "Télécharger", onclick: () => saveAs(it.blob, it.name) }, "⬇"),
+        h("button", { class: "ic", style: "border:1px solid var(--line)", "aria-label": "Retirer", onclick: () => { removeMedia(it.id); draw(); } }, "🗑"))))));
+  };
+  draw();
+  return sheet("Bibliothèque", "Tes fichiers de cette session. Ils restent dans cet onglet : rien n’est envoyé nulle part. Ferme la page et ils disparaissent : pense à les télécharger.",
+    drop("image/*,video/*,audio/*,.pdf,.txt", true, "Dépose une image, une vidéo, un son, un PDF ou un texte.", (files) => { files.forEach((f) => addMedia(f.name, f)); draw(); }),
+    out, list);
+}
+
+function BrowserPanel() {
+  const PAGES = [["Wikipédia", "https://fr.wikipedia.org/wiki/Atelier"], ["Wiktionnaire", "https://fr.wiktionary.org/wiki/fran%C3%A7ais"], ["Cartes", "https://www.openstreetmap.org/"]];
+  let marks = [];
+  try { marks = JSON.parse(localStorage.getItem("etabli-pages") || "[]").filter((m) => m && typeof m.href === "string").slice(0, 12); } catch {}
+  const addr = h("input", { type: "url", "aria-label": "Adresse", value: PAGES[0][1], placeholder: "https://" });
+  const err = h("p", { class: "note err" });
+  const web = h("iframe", { class: "web", title: "Page consultée", src: PAGES[0][1], sandbox: "allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox", referrerpolicy: "no-referrer" });
+  const chips = h("div", { class: "scroll" });
+  let current = PAGES[0][1];
+  const open = (raw) => {
+    try {
+      const t = raw.trim(); if (!t) throw new Error("Colle une adresse.");
+      const u = new URL(/^https?:\/\//i.test(t) ? t : "https://" + t);
+      if (!/^https?:$/.test(u.protocol)) throw new Error("Seuls les liens http et https sont acceptés.");
+      current = u.toString(); addr.value = current; web.src = current; err.textContent = "";
+    } catch (e) { err.textContent = e.message.includes("Invalid") ? "Cette adresse n’est pas valide." : e.message; }
+  };
+  const drawChips = () => {
+    chips.replaceChildren(...[...PAGES.map(([l, hr]) => [l, hr]), ...marks.map((m) => [m.label, m.href])].map(([l, hr]) => h("button", { class: "pill", type: "button", onclick: () => open(hr) }, l)));
+  };
+  drawChips();
+  return sheet("Navigateur", "Une fenêtre pour consulter une page. Beaucoup de sites (Google, YouTube, TikTok, Facebook…) refusent de s’afficher dans une autre page : s’il reste blanc, ouvre-le dans un nouvel onglet.",
+    h("form", { class: "row", style: "margin-top:0;flex-wrap:nowrap;flex-direction:column", onsubmit: (e) => { e.preventDefault(); open(addr.value); } },
+      addr, h("button", { class: "btn", type: "submit" }, "Ouvrir")),
+    chips,
+    h("div", { class: "row" },
+      h("button", { class: "ghost", type: "button", onclick: () => { try { const label = new URL(current).hostname.replace(/^www\./, ""); marks = [{ label, href: current }, ...marks.filter((m) => m.href !== current)].slice(0, 12); localStorage.setItem("etabli-pages", JSON.stringify(marks)); } catch {} drawChips(); } }, "Garder cette adresse"),
+      h("button", { class: "ghost", type: "button", onclick: () => window.open(current, "_blank", "noopener") }, "Ouvrir dans un onglet")),
+    err, web);
+}
+
+function SocialPanel() {
+  let server = "";
+  try { server = localStorage.getItem("etabli-server") || ""; } catch {}
+  const link = h("input", { type: "url", placeholder: "Colle le lien TikTok ou Facebook", "aria-label": "Lien de la vidéo" });
+  const srv = h("input", { type: "url", placeholder: "https://mon-app.vercel.app", value: server, "aria-label": "Adresse du serveur" });
+  const out = h("div");
+  const hostOf = (raw) => { try { const t = raw.trim(); return new URL(/^https?:\/\//i.test(t) ? t : "https://" + t).hostname.toLowerCase(); } catch { return ""; } };
+  const saveVideo = async (box, url, name) => {
+    box.replaceChildren(h("p", { class: "note" }, "Téléchargement…"));
+    try {
+      const r = await fetch(url);
+      if (!r.ok) throw new Error("refus");
+      const blob = await r.blob();
+      if (!blob.size) throw new Error("vide");
+      box.replaceChildren(resultCard(addMedia(name, new Blob([blob], { type: "video/mp4" }))));
+    } catch {
+      window.open(url, "_blank", "noopener");
+      box.replaceChildren(h("p", { class: "note" }, "Le navigateur ne permet pas l’enregistrement direct. La vidéo s’ouvre dans un nouvel onglet : appuie longuement dessus puis « Télécharger la vidéo »."));
+    }
+  };
+  const showFound = (url, title, cover) => {
+    const box = h("div");
+    out.replaceChildren(h("div", { class: "card" },
+      h("p", { class: "note ok", style: "margin-top:0" }, "Vidéo trouvée" + (title ? " · " + title : "")),
+      h("div", { style: "margin-top:10px" }, h("video", { src: url, poster: cover || null, controls: true, playsinline: true })),
+      h("div", { class: "row" }, h("button", { class: "btn", onclick: () => saveVideo(box, url, "tiktok-" + (title || "video").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 30) + ".mp4") }, "Télécharger"))), box);
+  };
+  const btn = h("button", { class: "btn", style: "margin-top:16px", onclick: async () => {
+    out.replaceChildren(); const st = h("p", { class: "note" }, "Recherche de la vidéo…"); out.append(st);
+    const fail = (t) => { st.className = "note err"; st.textContent = t; };
+    btn.disabled = true;
+    try {
+      const raw = link.value.trim(); if (!raw) return fail("Colle d’abord le lien de la vidéo.");
+      const host = hostOf(raw); if (!host) return fail("Ce lien n’est pas valide.");
+      const isFb = /(facebook\.com|fb\.watch|fb\.com)$/.test(host), isTt = /(tiktok\.com|tt\.site)$/.test(host);
+      if (!isFb && !isTt) return fail("Seuls les liens TikTok et Facebook sont pris en charge.");
+      const base = srv.value.trim().replace(/\/+$/, "");
+      if (base) {
+        try { localStorage.setItem("etabli-server", base); } catch {}
+        let res; try { res = await fetch(base + "/api/social?url=" + encodeURIComponent(raw)); } catch { return fail("Ton serveur ne répond pas. Vérifie l’adresse, ou vide la case pour utiliser la méthode sans serveur."); }
+        if (!res.ok) { let m = "Le téléchargement a échoué."; try { const d = await res.json(); if (d.error) m = d.error; } catch {} return fail(m); }
+        const blob = await res.blob(); if (!blob.size) return fail("Le fichier reçu est vide.");
+        out.replaceChildren(resultCard(addMedia(res.headers.get("x-filename") || "video.mp4", new Blob([blob], { type: "video/mp4" })))); return;
+      }
+      if (isFb) return fail("Facebook ne peut pas être téléchargé sans serveur : il bloque les accès depuis une simple page. Renseigne ton serveur dans « Options avancées ».");
+      let data;
+      try { const r = await fetch("https://www.tikwm.com/api/?url=" + encodeURIComponent(raw) + "&hd=1"); data = await r.json(); }
+      catch { return fail("Impossible de joindre le service de recherche depuis cette page (blocage du navigateur ou pas d’internet). Essaie en ouvrant l’app depuis une adresse https, ou avec ton propre serveur."); }
+      const d = data && data.code === 0 && data.data;
+      if (!d) return fail((data && data.msg) ? "Le service répond : " + data.msg : "Vidéo introuvable. Elle est peut-être privée ou supprimée.");
+      const mediaUrl = (u) => (u ? (u.startsWith("http") ? u : "https://www.tikwm.com" + u) : "");
+      const url = mediaUrl(d.hdplay) || mediaUrl(d.play); if (!url) return fail("Aucun fichier vidéo trouvé.");
+      showFound(url, (d.title || "").slice(0, 60), mediaUrl(d.cover));
+    } finally { btn.disabled = false; }
+  } }, "Chercher la vidéo");
+  return sheet("TikTok / Facebook", "Colle le lien d’une vidéo publique, vérifie qu’elle s’affiche, puis télécharge-la. À utiliser seulement pour tes propres vidéos ou avec l’accord de l’auteur.",
+    field("Lien de la vidéo", link), btn, out,
+    h("p", { class: "note" }, "TikTok : sans serveur, le lien est transmis au service tiers tikwm.com pour retrouver la vidéo. Facebook : un serveur est nécessaire."),
+    h("details", { style: "margin-top:14px" }, h("summary", { style: "cursor:pointer;min-height:44px;display:flex;align-items:center" }, "Options avancées : mon propre serveur"),
+      h("p", { class: "note", style: "margin-top:0" }, "Si tu as hébergé la version complète d’Établi, colle son adresse. Elle sera utilisée à la place du service tiers (et permet Facebook)."),
+      field("Adresse de ton serveur Établi", srv)));
+}
+
+function ImportPanel() {
+  const link = h("input", { type: "url", placeholder: "https://exemple.org/film.mp4", "aria-label": "Lien du fichier" });
+  const out = h("div");
+  const btn = h("button", { class: "btn", style: "margin-top:16px", onclick: () => runTask(btn, out, async (st) => {
+    let u;
+    try { const t = link.value.trim(); u = new URL(/^https?:\/\//i.test(t) ? t : "https://" + t); } catch { throw new Error("Cette adresse n’est pas valide."); }
+    if (/(tiktok|tt\.site|facebook|fb\.watch|fb\.com|instagram|youtube|youtu\.be)/i.test(u.hostname)) throw new Error("Ce lien est une page TikTok/Facebook, pas un fichier vidéo. Utilise l’onglet « TikTok / Facebook ».");
+    st("Récupération…");
+    let res;
+    try { res = await fetch(u); } catch { throw new Error("Ton navigateur bloque la récupération : ce site refuse que d’autres pages lisent ses fichiers (protection « CORS »). Ce n’est pas un défaut de l’app, seul un serveur peut contourner ça. Télécharge le fichier à la main puis dépose-le ici."); }
+    if (!res.ok) throw new Error("Le fichier n’a pas pu être récupéré.");
+    const type = (res.headers.get("content-type") || "").split(";")[0];
+    if (type.startsWith("text/html") || type.includes("json")) throw new Error("Ce lien ouvre une page, pas un fichier.");
+    const blob = await res.blob();
+    if (blob.size > 120 * 1048576) throw new Error("Fichier trop lourd (120 Mo maximum).");
+    const last = decodeURIComponent(u.pathname.split("/").pop() || "");
+    return { name: last.includes(".") ? last.slice(0, 80) : "fichier", blob };
+  }) }, "Récupérer");
+  return sheet("Lien direct", "Récupère un fichier public à partir d’un lien qui se termine par .mp4, .mp3, .png, .pdf… Beaucoup de sites refusent : dans ce cas, télécharge le fichier à la main puis dépose-le dans la bibliothèque.",
+    field("Lien du fichier", link), btn, out);
+}
+
+function CompressPanel() {
+  const Q = { haute: ["scale=-2:720", "23", "128k", "Haute · 720p"], standard: ["scale=-2:480", "28", "96k", "Standard · 480p"], legere: ["scale=-2:360", "32", "64k", "Légère · 360p"], mini: ["scale=-2:240", "36", "48k", "Mini · 240p"] };
+  let q = "standard";
+  const p = singlePick("video/*", "Dépose une vidéo.", ["video"]);
+  const out = h("div");
+  const btn = h("button", { class: "btn", style: "margin-top:16px", onclick: () => {
+    const pick = p.state.pick; if (!pick) return out.replaceChildren(h("p", { class: "note err" }, "Choisis une vidéo."));
+    runTask(btn, out, async (st) => {
+      const [scale, crf, ab] = Q[q]; const input = "in." + ext(pick.name, pick.blob.type, "mp4");
+      const blob = await ffRun([{ name: input, blob: pick.blob }], [["-i", input, "-vf", scale, "-c:v", "libx264", "-preset", "veryfast", "-crf", crf, "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", ab, "-movflags", "+faststart", "out.mp4"]], "out.mp4", "video/mp4", "Compression", st, "Le traitement a échoué. Essaie un mp4 ou un webm plus court.");
+      return { name: baseName(pick.name) + "-" + q + ".mp4", blob };
+    });
+  } }, "Compresser");
+  return sheet("Compresser", "Quatre qualités, du plus net au plus léger. Le premier passage télécharge un moteur vidéo (environ 30 Mo). Préfère une vidéo courte.",
+    p.node, field("Qualité", select(Object.entries(Q).map(([k, v]) => [k, v[3]]), q, (v) => { q = v; })), btn, out);
+}
+
+function PdfPanel() {
+  const m = multiPick("image/*", "Dépose une ou plusieurs images.", ["image"], 16);
+  const nm = nameField("images");
+  const out = h("div");
+  const btn = h("button", { class: "btn", style: "margin-top:16px", onclick: () => {
+    if (!m.state.items.length) return out.replaceChildren(h("p", { class: "note err" }, "Ajoute au moins une image."));
+    runTask(btn, out, async (st) => {
+      st("Chargement de la bibliothèque PDF…");
+      await loadScript("https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js");
+      const pdf = await PDFLib.PDFDocument.create();
+      let n = 0;
+      for (const it of m.state.items) {
+        st("Image " + (++n) + " / " + m.state.items.length);
+        let raw = new Uint8Array(await it.blob.arrayBuffer());
+        const png = raw.length > 8 && raw[0] === 0x89 && raw[1] === 0x50, jpg = raw.length > 3 && raw[0] === 0xff && raw[1] === 0xd8;
+        if (!png && !jpg) {
+          const bmp = await createImageBitmap(it.blob), c = h("canvas"); c.width = bmp.width; c.height = bmp.height; c.getContext("2d").drawImage(bmp, 0, 0);
+          raw = new Uint8Array(await (await new Promise((r) => c.toBlob(r, "image/png"))).arrayBuffer());
+        }
+        const img = jpg ? await pdf.embedJpg(raw) : await pdf.embedPng(raw);
+        const page = pdf.addPage([595.28, 841.89]); const mg = 36;
+        const s = Math.min((page.getWidth() - mg * 2) / img.width, (page.getHeight() - mg * 2) / img.height);
+        page.drawImage(img, { x: (page.getWidth() - img.width * s) / 2, y: (page.getHeight() - img.height * s) / 2, width: img.width * s, height: img.height * s });
+      }
+      return { name: nm.get() + ".pdf", blob: new Blob([await pdf.save()], { type: "application/pdf" }) };
+    });
+  } }, "Créer le PDF");
+  return sheet("Images en PDF", "Chaque image devient une page A4, dans l’ordre que tu choisis. Donne un nom au PDF avant de le créer.", m.node, nm.node, btn, out);
+}
+
+const VOICES = [["fr-FR", "Français"], ["en-US", "Anglais (États-Unis)"], ["en-GB", "Anglais (Royaume-Uni)"], ["es-ES", "Espagnol"], ["de-DE", "Allemand"], ["it-IT", "Italien"], ["pt-BR", "Portugais"], ["nl-NL", "Néerlandais"], ["pl-PL", "Polonais"], ["tr-TR", "Turc"], ["ru-RU", "Russe"], ["ar-SA", "Arabe"], ["zh-CN", "Chinois"], ["ja-JP", "Japonais"], ["ko-KR", "Coréen"], ["sv-SE", "Suédois"]];
+function SpeakPanel() {
+  let lang = "fr-FR", rate = 1, voiceURI = "";
+  const ta = h("textarea", { maxlength: 5000, "aria-label": "Texte à lire" }, "Bonjour. Ceci est l’établi, un atelier pour tes fichiers.");
+  const err = h("p", { class: "note err" });
+  const voiceBox = h("div");
+  const synth = window.speechSynthesis;
+  const matching = () => (synth ? synth.getVoices() : []).filter((v) => v.lang.toLowerCase().startsWith(lang.slice(0, 2).toLowerCase()));
+  const drawVoices = () => {
+    voiceBox.replaceChildren();
+    const m = matching(); if (!m.length) return;
+    voiceBox.append(field("Voix", select([["", "Voix proposée"], ...m.map((v) => [v.voiceURI, v.name])], voiceURI, (v) => { voiceURI = v; })));
+  };
+  if (synth) { synth.onvoiceschanged = drawVoices; drawVoices(); }
+  const speak = () => {
+    if (!synth) { err.textContent = "Ce navigateur ne lit pas le texte à voix haute."; return; }
+    err.textContent = ""; synth.cancel();
+    const u = new SpeechSynthesisUtterance(ta.value); u.lang = lang; u.rate = rate;
+    const v = synth.getVoices().find((x) => x.voiceURI === voiceURI) || matching()[0]; if (v) u.voice = v;
+    u.onerror = () => { err.textContent = "La lecture a été interrompue."; };
+    synth.speak(u);
+  };
+  const rl = h("span", null, "Débit 1.0");
+  return sheet("Lecture vocale", "Le texte est lu avec les voix de ton appareil. Choisis la langue, le débit, puis lance.",
+    ta, field("Langue", select(VOICES, lang, (v) => { lang = v; voiceURI = ""; drawVoices(); })), voiceBox,
+    h("label", { class: "f" }, rl, h("input", { type: "range", min: 0.7, max: 1.3, step: 0.1, value: 1, style: "width:100%", oninput: (e) => { rate = Number(e.target.value); rl.textContent = "Débit " + rate.toFixed(1); } })),
+    h("div", { class: "row" }, h("button", { class: "btn", onclick: speak }, "Lire"), h("button", { class: "ghost", onclick: () => synth && synth.cancel() }, "Stop")), err);
+}
+
+const ASR = [["french", "Français"], ["english", "Anglais"], ["spanish", "Espagnol"], ["german", "Allemand"], ["italian", "Italien"], ["portuguese", "Portugais"], ["arabic", "Arabe"], ["dutch", "Néerlandais"], ["polish", "Polonais"], ["russian", "Russe"], ["chinese", "Chinois"], ["japanese", "Japonais"], ["", "Détecter"]];
+let asrModel = null;
+function getAsr(st) {
+  if (!asrModel) asrModel = (async () => {
+    st("Chargement du modèle de transcription…");
+    const mod = await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.3.1/+esm");
+    mod.env.allowLocalModels = false;
+    return mod.pipeline("automatic-speech-recognition", "onnx-community/whisper-tiny", { dtype: "q8", device: "wasm",
+      progress_callback: (i) => { if (i.status === "progress" && typeof i.progress === "number") st("Modèle… " + Math.round(i.progress) + " %"); } });
+  })().catch((e) => { asrModel = null; throw e; });
+  return asrModel;
+}
+function TranscribePanel() {
+  let mode = "mic", language = "french", micLang = "fr-FR", rec = null;
+  const body = h("div"), out = h("div"), status = h("p", { class: "note" });
+  const tabs = h("div", { class: "row", style: "margin-top:0" });
+  const httpsHint = location.protocol === "https:" || location.hostname === "localhost" ? null
+    : h("p", { class: "warn" }, "Cette page est ouverte depuis un fichier : le micro y est refusé par le navigateur. Pour l’activer, mets etabli.html en ligne en https (par exemple en le glissant sur Netlify Drop, ou via GitHub Pages) et ouvre le lien obtenu.");
+  const p = singlePick("audio/*,video/*", "Dépose un audio court, ou une vidéo dont on prendra le son.", ["audio", "video"]);
+  const micBtn = h("button", { class: "btn", style: "margin-top:16px" }, "Écouter");
+  let listening = false;
+  micBtn.onclick = () => {
+    status.className = "note"; status.textContent = "";
+    if (listening) { rec && rec.stop(); return; }
+    const C = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!C) { status.className = "note err"; status.textContent = "Ce navigateur ne propose pas la dictée. Utilise Chrome, ou un fichier audio."; return; }
+    rec = new C(); rec.lang = micLang; rec.continuous = true; rec.interimResults = true;
+    rec.onresult = (e) => { let t = ""; for (let i = 0; i < e.results.length; i++) t += e.results[i][0].transcript; out.replaceChildren(); textResult(t.trim(), "transcription.txt", out); };
+    const reset = () => { listening = false; micBtn.textContent = "Écouter"; };
+    rec.onerror = (e) => {
+      reset(); status.className = "note err";
+      status.textContent = (e.error === "not-allowed" || e.error === "service-not-allowed")
+        ? "Le micro est bloqué. " + (/^https:$/.test(location.protocol) ? "Autorise-le dans les réglages du site (cadenas dans la barre d’adresse)." : "Cette page n’est pas en https (elle est ouverte depuis un fichier) : le navigateur refuse alors de demander l’autorisation. Héberge le fichier en https (voir l’aide ci-dessous) ou utilise l’onglet Fichier.")
+        : e.error === "no-speech" ? "Aucun son détecté." : e.error === "network" ? "La dictée a besoin d’internet." : "La dictée s’est arrêtée.";
+    };
+    rec.onend = reset;
+    try { rec.start(); listening = true; micBtn.textContent = "Arrêter"; status.textContent = "Écoute…"; }
+    catch { reset(); status.className = "note err"; status.textContent = "La dictée n’a pas pu démarrer."; }
+  };
+  const fileBtn = h("button", { class: "btn", style: "margin-top:16px", onclick: async () => {
+    const pick = p.state.pick; if (!pick) { status.className = "note err"; status.textContent = "Choisis un fichier."; return; }
+    fileBtn.disabled = true; out.replaceChildren(); status.className = "note";
+    try {
+      try { const ctx = new AudioContext(); const d = await ctx.decodeAudioData(await pick.blob.arrayBuffer()); await ctx.close(); if (d.duration > 90) throw new Error("Le fichier dépasse 90 secondes. Coupe-le, ou utilise la dictée au micro."); }
+      catch (e) { if (/90 secondes/.test(msg(e))) throw e; }
+      const asr = await getAsr((t) => { status.textContent = t; });
+      status.textContent = "Transcription…";
+      const url = URL.createObjectURL(pick.blob);
+      let res; try { res = await asr(url, { task: "transcribe", chunk_length_s: 30, stride_length_s: 5, ...(language ? { language } : {}) }); } finally { URL.revokeObjectURL(url); }
+      const text = (res.text || "").trim(); if (!text) throw new Error("Aucun mot reconnu.");
+      textResult(text, "transcription.txt", out); status.textContent = "Terminé. Le son n’a pas quitté cet onglet.";
+    } catch (e) { status.className = "note err"; status.textContent = msg(e); }
+    finally { fileBtn.disabled = false; }
+  } }, "Transcrire");
+  const draw = () => {
+    tabs.replaceChildren(...[["mic", "Micro"], ["file", "Fichier"]].map(([id, l]) => h("button", { class: "pill" + (mode === id ? " on" : ""), onclick: () => { mode = id; draw(); } }, l)));
+    body.replaceChildren(...(mode === "mic"
+      ? [field("Langue", select(VOICES, micLang, (v) => { micLang = v; })), micBtn]
+      : [h("div", { style: "margin-top:14px" }, p.node), field("Langue du fichier", select(ASR, language, (v) => { language = v; })), fileBtn]));
+  };
+  draw();
+  return sheet("Transcrire", "La dictée passe par le service de ton navigateur (Chrome recommandé). Un fichier audio est transcrit dans l’onglet après le téléchargement d’un petit modèle (90 secondes maximum).", tabs, body, status, out, httpsHint);
+}
+
+function ExtractPanel() {
+  const p = singlePick("video/*,audio/*", "Dépose une vidéo.", ["video", "audio"]);
+  const out = h("div");
+  const btn = h("button", { class: "btn", style: "margin-top:16px", onclick: () => {
+    const pick = p.state.pick; if (!pick) return out.replaceChildren(h("p", { class: "note err" }, "Choisis une vidéo."));
+    runTask(btn, out, async (st) => {
+      const input = "in." + ext(pick.name, pick.blob.type, "mp4");
+      try {
+        const blob = await ffRun([{ name: input, blob: pick.blob }], [["-i", input, "-vn", "-c:a", "libmp3lame", "-q:a", "5", "out.mp3"]], "out.mp3", "audio/mpeg", "Extraction", st, "mp3 impossible");
+        return { name: baseName(pick.name) + ".mp3", blob };
+      } catch (e) {
+        if (/moteur vidéo/.test(msg(e))) throw e;
+        st("Le mp3 a échoué, passage en wav…");
+        const blob = await ffRun([{ name: input, blob: pick.blob }], [["-i", input, "-vn", "-c:a", "pcm_s16le", "out.wav"]], "out.wav", "audio/wav", "Extraction", st, "Impossible d’extraire le son de ce fichier.");
+        return { name: baseName(pick.name) + ".wav", blob };
+      }
+    });
+  } }, "Extraire");
+  return sheet("Extraire le son", "Garde uniquement la piste audio d’une vidéo, en mp3 quand c’est possible.", p.node, btn, out);
+}
+
+function CollagePanel() {
+  let dir = "h", gap = 16, bg = "#fffcf7";
+  const m = multiPick("image/*", "Dépose les images à assembler.", ["image"], 12);
+  const nm = nameField("collage");
+  const out = h("div");
+  const dirBtns = h("div", { class: "row" });
+  const drawDir = () => dirBtns.replaceChildren(...[["h", "Horizontal"], ["v", "Vertical"]].map(([id, l]) => h("button", { class: "pill" + (dir === id ? " on" : ""), onclick: () => { dir = id; drawDir(); } }, l)));
+  drawDir();
+  const gl = h("span", null, "Espace 16");
+  const btn = h("button", { class: "btn", style: "margin-top:16px", onclick: () => {
+    if (!m.state.items.length) return out.replaceChildren(h("p", { class: "note err" }, "Ajoute au moins une image."));
+    runTask(btn, out, async () => {
+      const bms = await Promise.all(m.state.items.map((i) => createImageBitmap(i.blob)));
+      const gt = gap * Math.max(0, bms.length - 1);
+      const W = dir === "h" ? bms.reduce((s, b) => s + b.width, 0) + gt : Math.max(...bms.map((b) => b.width));
+      const H = dir === "v" ? bms.reduce((s, b) => s + b.height, 0) + gt : Math.max(...bms.map((b) => b.height));
+      const sc = Math.min(1, 8192 / W, 8192 / H);
+      const c = h("canvas"); c.width = Math.max(1, Math.round(W * sc)); c.height = Math.max(1, Math.round(H * sc));
+      const ctx = c.getContext("2d"); ctx.fillStyle = bg; ctx.fillRect(0, 0, c.width, c.height); ctx.scale(sc, sc);
+      let x = 0, y = 0;
+      for (const b of bms) { if (dir === "h") { ctx.drawImage(b, x, (H - b.height) / 2); x += b.width + gap; } else { ctx.drawImage(b, (W - b.width) / 2, y); y += b.height + gap; } b.close(); }
+      const blob = await new Promise((r) => c.toBlob(r, "image/png"));
+      if (!blob) throw new Error("Le collage est vide.");
+      return { name: nm.get() + ".png", blob };
+    });
+  } }, "Assembler");
+  return sheet("Collage", "Aligne les images sur une ligne ou en colonne, avec un espace et un fond.", m.node, nm.node, dirBtns,
+    field("Fond", select([["#fffcf7", "Papier clair"], ["#f3eee6", "Papier"], ["#1b1916", "Encre"]], bg, (v) => { bg = v; })),
+    h("label", { class: "f" }, gl, h("input", { type: "range", min: 0, max: 48, step: 4, value: 16, style: "width:100%", oninput: (e) => { gap = Number(e.target.value); gl.textContent = "Espace " + gap; } })), btn, out);
+}
+
+function MuxPanel() {
+  const v = singlePick("video/*", "Dépose la vidéo.", ["video"]);
+  const a = singlePick("audio/*", "Dépose le son.", ["audio"]);
+  const nm = nameField("video-avec-son");
+  const out = h("div");
+  const btn = h("button", { class: "btn", style: "margin-top:16px", onclick: () => {
+    const vp = v.state.pick, ap = a.state.pick;
+    if (!vp || !ap) return out.replaceChildren(h("p", { class: "note err" }, "Choisis une vidéo et un son."));
+    runTask(btn, out, async (st) => {
+      const vn = "video." + ext(vp.name, vp.blob.type, "mp4"), an = "audio." + ext(ap.name, ap.blob.type, "mp3");
+      const blob = await ffRun([{ name: vn, blob: vp.blob }, { name: an, blob: ap.blob }],
+        [["-i", vn, "-i", an, "-map", "0:v:0", "-map", "1:a:0", "-c:v", "libx264", "-preset", "veryfast", "-crf", "23", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k", "-shortest", "out.mp4"]],
+        "out.mp4", "video/mp4", "Assemblage", st, "Impossible de réunir ces deux fichiers. Vérifie qu’il y a bien une image et un son.");
+      return { name: nm.get() + ".mp4", blob };
+    });
+  } }, "Réunir");
+  return sheet("Son et vidéo", "Pose une piste audio sur une vidéo. Le son d’origine est remplacé. La durée suit le plus court des deux.",
+    h("p", { style: "font-weight:500;margin:0" }, "Vidéo"), v.node, h("p", { style: "font-weight:500;margin:20px 0 0" }, "Son"), a.node, nm.node, btn, out);
+}
+
+function JoinPanel() {
+  let kind = "audio";
+  const holder = h("div"), tabs = h("div", { class: "row", style: "margin-top:0" }), out = h("div");
+  const nm = nameField("assemblage");
+  let m = null;
+  const btn = h("button", { class: "btn", style: "margin-top:16px", onclick: () => {
+    if (!m || m.state.items.length < 2) return out.replaceChildren(h("p", { class: "note err" }, "Ajoute au moins deux fichiers."));
+    const k = kind, items = m.state.items.slice();
+    runTask(btn, out, async (st) => {
+      const names = items.map((it, i) => "part" + i + "." + ext(it.name, it.blob.type, k === "audio" ? "mp3" : "mp4"));
+      const inputs = names.flatMap((n) => ["-i", n]);
+      const aPrep = names.map((_, i) => `[${i}:a:0]aresample=44100,aformat=sample_fmts=fltp:channel_layouts=stereo[a${i}]`);
+      const vPrep = names.map((_, i) => `[${i}:v:0]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=30,format=yuv420p[v${i}]`);
+      const N = names.length;
+      const files = items.map((it, i) => ({ name: names[i], blob: it.blob }));
+      if (k === "audio") {
+        const f = aPrep.join(";") + ";" + names.map((_, i) => `[a${i}]`).join("") + `concat=n=${N}:v=0:a=1[a]`;
+        const blob = await ffRun(files, [[...inputs, "-filter_complex", f, "-map", "[a]", "-c:a", "libmp3lame", "-q:a", "4", "out.mp3"]], "out.mp3", "audio/mpeg", "Assemblage", st, "Impossible de réunir ces sons. Vérifie que ce sont bien des fichiers audio.");
+        return { name: nm.get() + ".mp3", blob };
+      }
+      const withA = [...vPrep, ...aPrep, names.map((_, i) => `[v${i}][a${i}]`).join("") + `concat=n=${N}:v=1:a=1[v][a]`].join(";");
+      const noA = [...vPrep, names.map((_, i) => `[v${i}]`).join("") + `concat=n=${N}:v=1:a=0[v]`].join(";");
+      const enc = ["-c:v", "libx264", "-preset", "veryfast", "-crf", "26"];
+      const blob = await ffRun(files, [
+        [...inputs, "-filter_complex", withA, "-map", "[v]", "-map", "[a]", ...enc, "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", "out.mp4"],
+        [...inputs, "-filter_complex", noA, "-map", "[v]", ...enc, "-movflags", "+faststart", "out.mp4"],
+      ], "out.mp4", "video/mp4", "Assemblage", st, "Impossible de réunir ces vidéos. Essaie des fichiers plus courts.");
+      return { name: nm.get() + ".mp4", blob };
+    });
+  } }, "Réunir");
+  const draw = () => {
+    if (m) m.clear();
+    m = multiPick(kind === "audio" ? "audio/*" : "video/*", kind === "audio" ? "Dépose au moins deux sons." : "Dépose au moins deux vidéos.", [kind], 10);
+    tabs.replaceChildren(...[["audio", "Sons"], ["video", "Vidéos"]].map(([id, l]) => h("button", { class: "pill" + (kind === id ? " on" : ""), onclick: () => { kind = id; out.replaceChildren(); draw(); } }, l)));
+    holder.replaceChildren(h("div", { style: "margin-top:14px" }, m.node));
+  };
+  draw();
+  return sheet("Mettre bout à bout", "Réunis plusieurs sons, ou plusieurs vidéos, dans l’ordre choisi. Les vidéos sont mises au format 1280×720. Préfère des fichiers courts.", tabs, holder, nm.node, btn, out);
+}
+
+const OCR = [["fra+eng", "Français + anglais"], ["fra", "Français"], ["eng", "Anglais"], ["spa", "Espagnol"], ["deu", "Allemand"], ["ita", "Italien"], ["por", "Portugais"], ["ara", "Arabe"], ["rus", "Russe"]];
+async function makeOcr(lang, st) {
+  await loadScript("https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js");
+  return Tesseract.createWorker(lang, 1, { logger: (m) => { if (m.status === "recognizing text") st("Lecture… " + Math.round((m.progress || 0) * 100) + " %"); else if (m.status) st("Préparation de la lecture…"); } });
+}
+function OcrPanel() {
+  let lang = "fra+eng";
+  const m = multiPick("image/*,.pdf,application/pdf", "Dépose une image, plusieurs images, ou un PDF.", ["image", "pdf"], 8);
+  const out = h("div"), status = h("p", { class: "note" });
+  const isPdf = (it) => it.blob.type === "application/pdf" || it.name.toLowerCase().endsWith(".pdf");
+  const btn = h("button", { class: "btn", style: "margin-top:16px", onclick: async () => {
+    const items = m.state.items.slice();
+    if (!items.length) { status.className = "note err"; status.textContent = "Ajoute une image ou un PDF."; return; }
+    btn.disabled = true; out.replaceChildren(); status.className = "note";
+    const st = (t) => { status.textContent = t; };
+    try {
+      let text = "";
+      const pdfs = items.filter(isPdf), imgs = items.filter((i) => !isPdf(i));
+      if (pdfs.length && imgs.length) throw new Error("Choisis soit un PDF, soit des images, pas les deux.");
+      if (pdfs.length > 1) throw new Error("Un seul PDF à la fois.");
+      if (pdfs.length) {
+        st("Ouverture du PDF…");
+        const V = "3.11.174";
+        await loadScript(`https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${V}/pdf.min.js`);
+        const wtxt = await (await fetch(`https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${V}/pdf.worker.min.js`)).text();
+        pdfjsLib.GlobalWorkerOptions.workerSrc = URL.createObjectURL(new Blob([wtxt], { type: "text/javascript" }));
+        const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(await pdfs[0].blob.arrayBuffer()) }).promise;
+        const count = Math.min(pdf.numPages, 8), slots = [], scans = [];
+        for (let i = 1; i <= count; i++) {
+          st("Page " + i + " / " + count);
+          const page = await pdf.getPage(i);
+          const t = (await page.getTextContent()).items.map((x) => (typeof x.str === "string" ? x.str : "")).join(" ").replace(/\s+/g, " ").trim();
+          if (t.length >= 24) slots[i - 1] = count > 1 ? `— Page ${i} —\n${t}` : t;
+          else { const vp = page.getViewport({ scale: 1.8 }); const c = h("canvas"); c.width = Math.ceil(vp.width); c.height = Math.ceil(vp.height); await page.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise; scans.push({ i, c }); }
+        }
+        if (scans.length) {
+          st("Reconnaissance des pages scannées…");
+          const w = await makeOcr(lang, st);
+          try { for (const s of scans) { st("Scan de la page " + s.i); const r = await w.recognize(s.c); const t = r.data.text.trim(); if (t) slots[s.i - 1] = count > 1 ? `— Page ${s.i} —\n${t}` : t; } } finally { await w.terminate(); }
+        }
+        if (pdf.numPages > 8) slots.push("Seules les 8 premières pages ont été lues.");
+        text = slots.filter(Boolean).join("\n\n").trim();
+      } else {
+        const w = await makeOcr(lang, st);
+        try {
+          const parts = [];
+          for (let i = 0; i < imgs.length; i++) { if (imgs.length > 1) st(`Image ${i + 1} / ${imgs.length}`); const r = await w.recognize(imgs[i].blob); const t = r.data.text.trim(); if (t) parts.push(imgs.length > 1 ? `— Image ${i + 1} —\n${t}` : t); }
+          text = parts.join("\n\n").trim();
+        } finally { await w.terminate(); }
+      }
+      if (!text) throw new Error("Aucun texte repéré. Essaie une image plus nette, ou une autre langue.");
+      textResult(text, "scan.txt", out); st("Lecture terminée.");
+    } catch (e) { status.className = "note err"; status.textContent = msg(e); }
+    finally { btn.disabled = false; }
+  } }, "Lire le texte");
+  return sheet("Scanner le texte", "Lis le texte d’une image, de plusieurs images, ou d’un PDF. Si le PDF contient déjà du texte, il est repris directement ; les pages-photos passent par la reconnaissance. Huit pages maximum.",
+    m.node, field("Langue", select(OCR, lang, (v) => { lang = v; })), btn, status, out);
+}
+
+/* ---------- navigation ---------- */
+const TOOLS = [
+  ["library", "Bibliothèque", "Tes fichiers", LibraryPanel],
+  ["browser", "Navigateur", "Consulter une page", BrowserPanel],
+  ["social", "TikTok / Facebook", "Vidéo publique", SocialPanel],
+  ["import", "Lien direct", "Fichier public", ImportPanel],
+  ["compress", "Compresser", "Vidéo, 4 qualités", CompressPanel],
+  ["pdf", "Images en PDF", "Une page par image", PdfPanel],
+  ["speak", "Lecture", "Plusieurs langues", SpeakPanel],
+  ["transcribe", "Transcrire", "Micro ou fichier", TranscribePanel],
+  ["extract", "Extraire le son", "Depuis une vidéo", ExtractPanel],
+  ["collage", "Collage", "Ligne ou colonne", CollagePanel],
+  ["mux", "Son + vidéo", "Réunir les deux", MuxPanel],
+  ["join", "Bout à bout", "Sons ou vidéos", JoinPanel],
+  ["ocr", "Scanner", "Image ou PDF", OcrPanel],
+];
+let currentTool = "library";
+function show(id) {
+  currentTool = id;
+  const tool = TOOLS.find((t) => t[0] === id) || TOOLS[0];
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  const main = document.getElementById("main");
+  main.replaceChildren(tool[3]());
+  document.getElementById("nav").replaceChildren(...TOOLS.map(([tid, label, hint]) =>
+    h("button", { type: "button", "aria-current": tid === id ? "page" : null, onclick: () => show(tid) }, h("span", null, label), h("small", null, hint))));
+  window.scrollTo(0, 0);
+}
+show("library");
+</script>
+</body>
+</html>
