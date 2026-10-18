@@ -3,16 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Établi · Atelier média</title>
+<title>Établi</title>
 <style>
 :root{--paper:#f3eee6;--ink:#1b1916;--card:#fffcf7;--line:#e3dacd;--mute:#6f675e;--copper:#c0562a;--on-copper:#fff8f3;--pine:#234237;--on-ink:#f6f1ea}
 @media (prefers-color-scheme:dark){:root{--paper:#161412;--ink:#f1ebe2;--card:#211e1b;--line:#38332d;--mute:#a89f93;--copper:#e0794a;--on-copper:#1b1916;--pine:#8fc4ac;--on-ink:#161412}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 "Outfit",system-ui,-apple-system,"Segoe UI",sans-serif}
+body{margin:0;padding-bottom:64px;background:var(--paper);color:var(--ink);font:15px/1.5 "Outfit",system-ui,-apple-system,"Segoe UI",sans-serif}
 h1,.brand{font-family:"Fraunces",Georgia,serif;font-weight:600}
-header{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;background:var(--paper);border-bottom:1px solid var(--line)}
+header{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 16px;background:var(--paper);border-bottom:1px solid var(--line)}
 .brand{font-size:22px;line-height:1}.sub{font-size:12px;color:var(--mute)}
-#count{font-size:12px;color:var(--pine)}
+.ctrl{display:flex;align-items:center;gap:8px}
+.langsel{min-height:36px;width:auto;padding:0 8px;border:1px solid var(--line);border-radius:99px;background:var(--card);color:var(--ink);font:inherit;font-size:13px}
+.planpill{min-height:36px;padding:0 12px;border:1px solid var(--line);border-radius:99px;background:var(--card);color:var(--pine);font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
+.planpill.prem{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
 .shell{display:flex;flex-direction:column}
 nav{display:flex;gap:6px;overflow-x:auto;padding:10px 12px;border-bottom:1px solid var(--line)}
 nav button{flex:none;display:flex;flex-direction:column;align-items:flex-start;min-height:44px;padding:6px 12px;border:0;border-radius:12px;background:none;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
@@ -20,12 +23,14 @@ nav button small{display:none;font-size:12px;color:var(--mute)}
 nav button[aria-current=page]{background:var(--ink);color:var(--on-ink)}
 nav button[aria-current=page] small{color:var(--on-ink);opacity:.8}
 nav button:hover:not([aria-current=page]){background:var(--card)}
-main{padding:20px 16px 60px;min-width:0;flex:1}
-@media(min-width:900px){.shell{flex-direction:row;align-items:flex-start}nav{flex-direction:column;width:250px;flex:none;position:sticky;top:61px;border-bottom:0;border-right:1px solid var(--line);padding:14px 12px;overflow:visible}nav button small{display:block}main{padding:28px 32px 60px}}
+main{padding:20px 16px 40px;min-width:0;flex:1}
+@media(min-width:900px){.shell{flex-direction:row;align-items:flex-start}nav{flex-direction:column;width:250px;flex:none;position:sticky;top:57px;border-bottom:0;border-right:1px solid var(--line);padding:14px 12px;overflow:visible}nav button small{display:block}main{padding:28px 32px 40px}}
 section.sheet{max-width:760px}
+.titlerow{display:flex;align-items:center;gap:10px}
 h1{font-size:30px;line-height:1.15;margin:0}
-.lede{margin:8px 0 0;max-width:600px;font-size:14px;color:var(--mute)}
-.body{margin-top:22px}
+.info{flex:none;width:28px;height:28px;border:1px solid var(--line);border-radius:99px;background:var(--card);color:var(--mute);font:italic 600 14px Georgia,serif;cursor:pointer}
+.lede{margin:10px 0 0;max-width:600px;font-size:14px;color:var(--mute)}
+.body{margin-top:20px}
 .btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;border:0;border-radius:99px;background:var(--copper);color:var(--on-copper);font:inherit;font-weight:500;cursor:pointer;width:100%}
 @media(min-width:600px){.btn{width:auto}}
 .btn:disabled{opacity:.5;cursor:default}
@@ -59,21 +64,253 @@ ul.list img{width:44px;height:44px;border-radius:8px;object-fit:cover}
 .chosen button{min-height:44px;border:0;background:none;color:var(--mute);font:inherit;cursor:pointer}
 iframe.web{width:100%;height:70vh;margin-top:14px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
 .warn{margin-top:14px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--card);font-size:14px}
+.empty{margin:48px 0;text-align:center;color:var(--mute)}.empty b{display:block;font-size:34px;font-weight:400}
+.plans{display:grid;gap:10px;margin-top:16px}
+@media(min-width:600px){.plans{grid-template-columns:1fr 1fr}}
+.plan{padding:14px;border:2px solid var(--line);border-radius:16px;background:var(--card);text-align:left;color:var(--ink);font:inherit;cursor:pointer}
+.plan.on{border-color:var(--copper)}.plan b{display:block;font-size:20px}.plan small{color:var(--mute)}
+ul.feat{margin:16px 0 0;padding-left:20px}
+#ad{position:fixed;left:0;right:0;bottom:0;z-index:4;height:52px;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--card);border-top:1px solid var(--line);color:var(--mute);font-size:12px}
+#ad[hidden]{display:none}
+#ad button{border:0;background:none;color:var(--copper);font:inherit;font-size:12px;text-decoration:underline;cursor:pointer;min-height:44px}
+.veil{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:16px;background:rgba(0,0,0,.55)}
+.modal{width:100%;max-width:420px;padding:20px;border-radius:20px;background:var(--paper);border:1px solid var(--line)}
+.modal h2{margin:0 0 6px;font-family:"Fraunces",Georgia,serif;font-size:22px}
+.modal .btn,.modal .ghost{width:100%;margin-top:10px}
+.adbox{display:grid;place-items:center;height:180px;margin-top:12px;border:1px dashed var(--line);border-radius:14px;background:var(--card);color:var(--mute);text-align:center}
 </style>
 </head>
 <body>
-<header>
-  <div><div class="brand">Établi</div><div class="sub">Atelier média</div></div>
-  <div id="count">Session vide</div>
-</header>
+<header id="head"></header>
 <div class="shell">
-  <nav id="nav" aria-label="Outils"></nav>
-  <main id="main"></main>
+  <nav id="nav"></nav>
+  <main id="main"><p id="boot" style="color:var(--mute)">…</p><noscript><p>JavaScript is disabled.</p></noscript></main>
 </div>
+<div id="ad"></div>
 
 <script>
+window.addEventListener("error", function (e) {
+  var p = document.createElement("pre");
+  p.style.cssText = "white-space:pre-wrap;color:#c0562a;font:13px monospace;margin:16px";
+  p.textContent = "Error: " + (e.message || "unknown") + (e.filename ? "\n" + e.filename.split("/").pop() + ":" + e.lineno : "");
+  (document.getElementById("main") || document.body).appendChild(p);
+});
+window.addEventListener("unhandledrejection", function (e) {
+  var p = document.createElement("pre");
+  p.style.cssText = "white-space:pre-wrap;color:#c0562a;font:13px monospace;margin:16px";
+  p.textContent = "Error: " + ((e.reason && e.reason.message) || e.reason || "unknown");
+  (document.getElementById("main") || document.body).appendChild(p);
+});
+</script>
+<script>
 "use strict";
-/* ---------- outils de base ---------- */
+/* ============ Traductions (la clé est le texte français) ============ */
+const LANGS = { fr: "Français", en: "English", es: "Español" };
+const I18N = {
+  en: {
+    "Atelier média": "Media workshop", "Gratuit · {n} restant(s)": "Free · {n} left", "Premium": "Premium",
+    "Langue": "Language", "Aide": "Help", "Aucun fichier": "No files", "1 fichier": "1 file", "{n} fichiers": "{n} files",
+    "Bibliothèque": "Library", "Tes fichiers": "Your files", "Navigateur": "Browser", "Consulter une page": "Browse a page",
+    "TikTok / Facebook": "TikTok / Facebook", "Vidéo publique": "Public video", "Lien direct": "Direct link", "Fichier public": "Public file",
+    "Compresser": "Compress", "Vidéo, 4 qualités": "Video, 4 qualities", "Images en PDF": "Images to PDF", "Une page par image": "One page per image",
+    "Lecture": "Read aloud", "Plusieurs langues": "Many languages", "Transcrire": "Transcribe", "Micro ou fichier": "Mic or file",
+    "Extraire le son": "Extract audio", "Depuis une vidéo": "From a video", "Collage": "Collage", "Ligne ou colonne": "Row or column",
+    "Son + vidéo": "Audio + video", "Réunir les deux": "Combine both", "Bout à bout": "Join clips", "Sons ou vidéos": "Audios or videos",
+    "Scanner": "Scan text", "Image ou PDF": "Image or PDF", "Sans pubs ni limites": "No ads, no limits",
+    "Tes fichiers restent sur cet appareil et disparaissent à la fermeture de la page. Pense à les télécharger.": "Your files stay on this device and disappear when you close the page. Remember to download them.",
+    "Certains sites refusent de s’afficher ici. Utilise alors « Ouvrir dans un onglet ».": "Some sites refuse to display here. Use “Open in a tab” instead.",
+    "Pour vidéos publiques. À utiliser seulement pour tes propres vidéos ou avec l’accord de l’auteur.": "For public videos. Use only for your own videos or with the author’s permission.",
+    "Colle un lien qui se termine par .mp4, .mp3, .png, .pdf… Si le site refuse, télécharge le fichier puis dépose-le.": "Paste a link ending in .mp4, .mp3, .png, .pdf… If the site refuses, download the file and drop it here.",
+    "Quatre qualités, du plus net au plus léger. Le premier passage télécharge un moteur vidéo (environ 30 Mo).": "Four qualities, from sharpest to lightest. The first run downloads a video engine (about 30 MB).",
+    "Chaque image devient une page A4, dans l’ordre choisi.": "Each image becomes an A4 page, in the order you choose.",
+    "Le texte est lu avec les voix de ton appareil.": "The text is read with your device’s voices.",
+    "La dictée utilise le service de ton navigateur (Chrome conseillé). Un fichier est transcrit sur l’appareil (90 secondes maximum).": "Dictation uses your browser’s service (Chrome recommended). A file is transcribed on your device (90 seconds max).",
+    "Garde seulement le son d’une vidéo, en mp3 si possible.": "Keep only the sound of a video, as mp3 when possible.",
+    "Aligne les images en ligne ou en colonne.": "Line up images in a row or a column.",
+    "Pose un son sur une vidéo. Le son d’origine est remplacé.": "Put a sound on a video. The original sound is replaced.",
+    "Réunis plusieurs sons ou vidéos dans l’ordre choisi. Les vidéos passent en 1280×720.": "Join several sounds or videos in the order you choose. Videos are converted to 1280×720.",
+    "Lis le texte d’images ou d’un PDF (8 pages maximum).": "Read the text of images or a PDF (8 pages max).",
+    "Retire les pubs et les limites.": "Removes ads and limits.",
+    "Dépose une image, une vidéo, un son, un PDF ou un texte.": "Drop an image, video, sound, PDF or text file.",
+    "Parcourir": "Browse", "Depuis la bibliothèque": "From the library", "Retirer": "Remove", "Monter": "Move up", "Descendre": "Move down",
+    "Télécharger": "Download", "Ajouté à la bibliothèque · {name}": "Added to the library · {name}", "fichier": "file",
+    "Aucun fichier pour l’instant": "No files yet", "Copier": "Copy", "Copié": "Copied", "Sélectionne le texte": "Select the text",
+    "Garder dans la bibliothèque": "Keep in the library", "Ajouté": "Added", "Résultat": "Result",
+    "Image": "Image", "Vidéo": "Video", "Audio": "Audio", "PDF": "PDF", "Texte": "Text",
+    "Adresse": "Address", "Ouvrir": "Open", "Garder cette adresse": "Save this address", "Ouvrir dans un onglet": "Open in a tab",
+    "Page consultée": "Viewed page", "Wikipédia": "Wikipedia", "Wiktionnaire": "Wiktionary", "Cartes": "Maps",
+    "Colle une adresse.": "Paste an address.", "Seuls les liens http et https sont acceptés.": "Only http and https links are accepted.", "Cette adresse n’est pas valide.": "This address is not valid.",
+    "Colle le lien TikTok ou Facebook": "Paste the TikTok or Facebook link", "Lien de la vidéo": "Video link",
+    "Chercher la vidéo": "Find the video", "Recherche de la vidéo…": "Looking for the video…", "Colle d’abord le lien de la vidéo.": "Paste the video link first.",
+    "Ce lien n’est pas valide.": "This link is not valid.", "Seuls les liens TikTok et Facebook sont pris en charge.": "Only TikTok and Facebook links are supported.",
+    "Vidéo trouvée": "Video found", "Téléchargement…": "Downloading…",
+    "Le navigateur ne permet pas l’enregistrement direct. La vidéo s’ouvre dans un nouvel onglet : appuie longuement dessus puis « Télécharger la vidéo ».": "The browser does not allow saving directly. The video opens in a new tab: long-press it, then “Download video”.",
+    "Ton serveur ne répond pas. Vérifie l’adresse, ou vide la case pour utiliser la méthode sans serveur.": "Your server is not responding. Check the address, or clear the field to use the serverless method.",
+    "Le téléchargement a échoué.": "The download failed.", "Le fichier reçu est vide.": "The received file is empty.",
+    "Facebook ne peut pas être téléchargé sans serveur : il bloque les accès depuis une simple page. Renseigne ton serveur dans « Options avancées ».": "Facebook can’t be downloaded without a server: it blocks plain web pages. Enter your server in “Advanced options”.",
+    "Impossible de joindre le service de recherche depuis cette page (blocage du navigateur ou pas d’internet). Essaie avec ton propre serveur.": "Can’t reach the lookup service from this page (browser block or no internet). Try your own server.",
+    "Le service répond : {msg}": "The service says: {msg}", "Vidéo introuvable. Elle est peut-être privée ou supprimée.": "Video not found. It may be private or deleted.", "Aucun fichier vidéo trouvé.": "No video file found.",
+    "TikTok : le lien est transmis au service tikwm.com pour retrouver la vidéo. Facebook : serveur requis (options avancées).": "TikTok: the link is sent to tikwm.com to find the video. Facebook: a server is required (advanced options).",
+    "Options avancées : mon propre serveur": "Advanced options: my own server",
+    "Si tu as hébergé la version complète d’Établi, colle son adresse. Elle sera utilisée à la place du service tiers (et permet Facebook).": "If you host the full version of Établi, paste its address. It replaces the third-party service (and enables Facebook).",
+    "Adresse de ton serveur Établi": "Your Établi server address", "Adresse du serveur": "Server address",
+    "Lien du fichier": "File link", "Récupérer": "Fetch", "Récupération…": "Fetching…",
+    "Ce lien est une page TikTok/Facebook, pas un fichier vidéo. Utilise l’onglet « TikTok / Facebook ».": "This link is a TikTok/Facebook page, not a video file. Use the “TikTok / Facebook” tab.",
+    "Ton navigateur bloque la récupération : ce site refuse que d’autres pages lisent ses fichiers (protection « CORS »). Télécharge le fichier à la main puis dépose-le ici.": "Your browser blocks the fetch: this site doesn’t let other pages read its files (“CORS” protection). Download the file manually, then drop it here.",
+    "Le fichier n’a pas pu être récupéré.": "The file could not be fetched.", "Ce lien ouvre une page, pas un fichier.": "This link opens a page, not a file.",
+    "Fichier trop lourd (120 Mo maximum).": "File too large (120 MB max).",
+    "Dépose une vidéo.": "Drop a video.", "Choisis une vidéo.": "Choose a video.", "Qualité": "Quality", "Compression": "Compressing",
+    "Haute · 720p": "High · 720p", "Standard · 480p": "Standard · 480p", "Légère · 360p": "Light · 360p", "Mini · 240p": "Mini · 240p",
+    "Le traitement a échoué. Essaie un mp4 ou un webm plus court.": "Processing failed. Try a shorter mp4 or webm.",
+    "Dépose une ou plusieurs images.": "Drop one or more images.", "Nom du fichier": "File name", "Ajoute au moins une image.": "Add at least one image.", "Créer le PDF": "Create the PDF",
+    "Chargement de la bibliothèque PDF…": "Loading the PDF library…", "Image {n} / {total}": "Image {n} / {total}",
+    "Texte à lire": "Text to read", "Bonjour. Ceci est l’établi, un atelier pour tes fichiers.": "Hello. This is Établi, a workshop for your files.",
+    "Voix": "Voice", "Voix proposée": "Suggested voice", "Débit {r}": "Speed {r}", "Lire": "Read", "Stop": "Stop",
+    "Ce navigateur ne lit pas le texte à voix haute.": "This browser can’t read text aloud.", "La lecture a été interrompue.": "Reading was interrupted.",
+    "Détecter": "Detect", "Chargement du modèle de transcription…": "Loading the transcription model…", "Modèle… {p} %": "Model… {p} %",
+    "Micro": "Mic", "Fichier": "File", "Écouter": "Listen", "Arrêter": "Stop", "Écoute…": "Listening…", "Transcrire le fichier": "Transcribe the file",
+    "Ce navigateur ne propose pas la dictée. Utilise Chrome, ou un fichier audio.": "This browser has no dictation. Use Chrome, or an audio file.",
+    "Aucun son détecté.": "No sound detected.", "La dictée a besoin d’internet.": "Dictation needs internet.", "La dictée s’est arrêtée.": "Dictation stopped.", "La dictée n’a pas pu démarrer.": "Dictation could not start.",
+    "Le micro est bloqué. Autorise-le dans les réglages du site (cadenas dans la barre d’adresse).": "The mic is blocked. Allow it in the site settings (padlock in the address bar).",
+    "Le micro est bloqué. Cette page est ouverte depuis un fichier (pas en https) : le navigateur refuse de demander l’autorisation. Mets la page en ligne en https ou utilise l’onglet Fichier.": "The mic is blocked. This page is opened from a file (not https): the browser refuses to ask permission. Put the page online over https or use the File tab.",
+    "Dépose un audio court, ou une vidéo dont on prendra le son.": "Drop a short audio, or a video whose sound will be used.", "Langue du fichier": "File language",
+    "Choisis un fichier.": "Choose a file.", "Le fichier dépasse 90 secondes. Coupe-le, ou utilise la dictée au micro.": "The file is longer than 90 seconds. Trim it, or use mic dictation.",
+    "Transcription…": "Transcribing…", "Aucun mot reconnu.": "No words recognized.", "Terminé. Le son n’a pas quitté cet onglet.": "Done. The sound never left this tab.",
+    "Extraire": "Extract", "Extraction": "Extracting", "Le mp3 a échoué, passage en wav…": "mp3 failed, switching to wav…", "Impossible d’extraire le son de ce fichier.": "Can’t extract the sound from this file.",
+    "Dépose les images à assembler.": "Drop the images to combine.", "Horizontal": "Horizontal", "Vertical": "Vertical", "Fond": "Background", "Papier clair": "Light paper", "Papier": "Paper", "Encre": "Ink",
+    "Espace {g}": "Gap {g}", "Assembler": "Combine", "Le collage est vide.": "The collage is empty.",
+    "Dépose la vidéo.": "Drop the video.", "Dépose le son.": "Drop the sound.", "Choisis une vidéo et un son.": "Choose a video and a sound.", "Réunir": "Combine", "Assemblage": "Combining",
+    "Impossible de réunir ces deux fichiers. Vérifie qu’il y a bien une image et un son.": "Can’t combine these two files. Check that there is a picture and a sound.",
+    "Sons": "Audios", "Vidéos": "Videos", "Dépose au moins deux sons.": "Drop at least two sounds.", "Dépose au moins deux vidéos.": "Drop at least two videos.", "Ajoute au moins deux fichiers.": "Add at least two files.",
+    "Impossible de réunir ces sons. Vérifie que ce sont bien des fichiers audio.": "Can’t join these sounds. Check that they are audio files.", "Impossible de réunir ces vidéos. Essaie des fichiers plus courts.": "Can’t join these videos. Try shorter files.",
+    "Dépose une image, plusieurs images, ou un PDF.": "Drop an image, several images, or a PDF.", "Français + anglais": "Français + English",
+    "Ajoute une image ou un PDF.": "Add an image or a PDF.", "Choisis soit un PDF, soit des images, pas les deux.": "Choose either a PDF or images, not both.", "Un seul PDF à la fois.": "One PDF at a time.",
+    "Ouverture du PDF…": "Opening the PDF…", "Page {i} / {count}": "Page {i} / {count}", "Reconnaissance des pages scannées…": "Recognizing scanned pages…", "Scan de la page {i}": "Scanning page {i}",
+    "— Page {i} —": "— Page {i} —", "— Image {i} —": "— Image {i} —", "Seules les 8 premières pages ont été lues.": "Only the first 8 pages were read.",
+    "Aucun texte repéré. Essaie une image plus nette, ou une autre langue.": "No text found. Try a sharper image, or another language.", "Lire le texte": "Read the text", "Lecture terminée.": "Reading finished.",
+    "Lecture… {p} %": "Reading… {p} %", "Préparation de la lecture…": "Preparing to read…", "Image {i} / {n}": "Image {i} / {n}",
+    "Impossible de charger une bibliothèque (connexion internet nécessaire).": "Could not load a library (internet connection needed).",
+    "Téléchargement du moteur vidéo (une seule fois)…": "Downloading the video engine (once)…", "Le moteur vidéo n’a pas pu démarrer : {msg}": "The video engine could not start: {msg}",
+    "Ça n’a pas marché. Réessaie.": "That didn’t work. Try again.",
+    "Limite du jour atteinte": "Daily limit reached", "Tu as utilisé tes {n} essais gratuits aujourd’hui.": "You used your {n} free tries today.",
+    "Regarder une publicité (+{n})": "Watch an ad (+{n})", "Passer Premium": "Go Premium", "Plus tard": "Later",
+    "Espace publicitaire": "Ad space", "Publicité · {s} s": "Ad · {s} s", "Continuer": "Continue", "Pub": "Ads", "Sans pub": "Remove ads",
+    "Statut": "Status", "Version gratuite : {n} utilisations aujourd’hui.": "Free version: {n} uses today.", "Premium actif.": "Premium is active.",
+    "Aucune publicité": "No ads", "Utilisations illimitées": "Unlimited use", "Mensuel": "Monthly", "Annuel": "Yearly", "{p} / mois": "{p} / month", "{p} / an": "{p} / year",
+    "Activer Premium (démo)": "Activate Premium (demo)", "Revenir à la version gratuite": "Back to the free version",
+    "Mode démo : aucun paiement réel n’est branché. Ce bouton active simplement Premium sur cet appareil pour tester l’affichage.": "Demo mode: no real payment is connected. This button simply turns Premium on for this device to preview the screens.",
+  },
+  es: {
+    "Atelier média": "Taller multimedia", "Gratuit · {n} restant(s)": "Gratis · quedan {n}", "Premium": "Premium",
+    "Langue": "Idioma", "Aide": "Ayuda", "Aucun fichier": "Sin archivos", "1 fichier": "1 archivo", "{n} fichiers": "{n} archivos",
+    "Bibliothèque": "Biblioteca", "Tes fichiers": "Tus archivos", "Navigateur": "Navegador", "Consulter une page": "Ver una página",
+    "TikTok / Facebook": "TikTok / Facebook", "Vidéo publique": "Vídeo público", "Lien direct": "Enlace directo", "Fichier public": "Archivo público",
+    "Compresser": "Comprimir", "Vidéo, 4 qualités": "Vídeo, 4 calidades", "Images en PDF": "Imágenes a PDF", "Une page par image": "Una página por imagen",
+    "Lecture": "Lectura", "Plusieurs langues": "Varios idiomas", "Transcrire": "Transcribir", "Micro ou fichier": "Micro o archivo",
+    "Extraire le son": "Extraer audio", "Depuis une vidéo": "De un vídeo", "Collage": "Collage", "Ligne ou colonne": "Fila o columna",
+    "Son + vidéo": "Audio + vídeo", "Réunir les deux": "Unir ambos", "Bout à bout": "Unir clips", "Sons ou vidéos": "Audios o vídeos",
+    "Scanner": "Escanear texto", "Image ou PDF": "Imagen o PDF", "Sans pubs ni limites": "Sin anuncios ni límites",
+    "Tes fichiers restent sur cet appareil et disparaissent à la fermeture de la page. Pense à les télécharger.": "Tus archivos se quedan en este dispositivo y desaparecen al cerrar la página. Acuérdate de descargarlos.",
+    "Certains sites refusent de s’afficher ici. Utilise alors « Ouvrir dans un onglet ».": "Algunos sitios no se muestran aquí. Usa entonces «Abrir en una pestaña».",
+    "Pour vidéos publiques. À utiliser seulement pour tes propres vidéos ou avec l’accord de l’auteur.": "Para vídeos públicos. Úsalo solo con tus propios vídeos o con permiso del autor.",
+    "Colle un lien qui se termine par .mp4, .mp3, .png, .pdf… Si le site refuse, télécharge le fichier puis dépose-le.": "Pega un enlace que termine en .mp4, .mp3, .png, .pdf… Si el sitio lo rechaza, descarga el archivo y suéltalo aquí.",
+    "Quatre qualités, du plus net au plus léger. Le premier passage télécharge un moteur vidéo (environ 30 Mo).": "Cuatro calidades, de la más nítida a la más ligera. La primera vez descarga un motor de vídeo (unos 30 MB).",
+    "Chaque image devient une page A4, dans l’ordre choisi.": "Cada imagen es una página A4, en el orden elegido.",
+    "Le texte est lu avec les voix de ton appareil.": "El texto se lee con las voces de tu dispositivo.",
+    "La dictée utilise le service de ton navigateur (Chrome conseillé). Un fichier est transcrit sur l’appareil (90 secondes maximum).": "El dictado usa el servicio del navegador (se recomienda Chrome). Un archivo se transcribe en el dispositivo (90 segundos máx.).",
+    "Garde seulement le son d’une vidéo, en mp3 si possible.": "Conserva solo el sonido de un vídeo, en mp3 si es posible.",
+    "Aligne les images en ligne ou en colonne.": "Alinea las imágenes en fila o en columna.",
+    "Pose un son sur une vidéo. Le son d’origine est remplacé.": "Pon un sonido a un vídeo. El sonido original se reemplaza.",
+    "Réunis plusieurs sons ou vidéos dans l’ordre choisi. Les vidéos passent en 1280×720.": "Une varios sonidos o vídeos en el orden elegido. Los vídeos pasan a 1280×720.",
+    "Lis le texte d’images ou d’un PDF (8 pages maximum).": "Lee el texto de imágenes o de un PDF (máx. 8 páginas).",
+    "Retire les pubs et les limites.": "Quita los anuncios y los límites.",
+    "Dépose une image, une vidéo, un son, un PDF ou un texte.": "Suelta una imagen, vídeo, sonido, PDF o texto.",
+    "Parcourir": "Examinar", "Depuis la bibliothèque": "Desde la biblioteca", "Retirer": "Quitar", "Monter": "Subir", "Descendre": "Bajar",
+    "Télécharger": "Descargar", "Ajouté à la bibliothèque · {name}": "Añadido a la biblioteca · {name}", "fichier": "archivo",
+    "Aucun fichier pour l’instant": "Aún no hay archivos", "Copier": "Copiar", "Copié": "Copiado", "Sélectionne le texte": "Selecciona el texto",
+    "Garder dans la bibliothèque": "Guardar en la biblioteca", "Ajouté": "Añadido", "Résultat": "Resultado",
+    "Image": "Imagen", "Vidéo": "Vídeo", "Audio": "Audio", "PDF": "PDF", "Texte": "Texto",
+    "Adresse": "Dirección", "Ouvrir": "Abrir", "Garder cette adresse": "Guardar esta dirección", "Ouvrir dans un onglet": "Abrir en una pestaña",
+    "Page consultée": "Página consultada", "Wikipédia": "Wikipedia", "Wiktionnaire": "Wikcionario", "Cartes": "Mapas",
+    "Colle une adresse.": "Pega una dirección.", "Seuls les liens http et https sont acceptés.": "Solo se aceptan enlaces http y https.", "Cette adresse n’est pas valide.": "Esta dirección no es válida.",
+    "Colle le lien TikTok ou Facebook": "Pega el enlace de TikTok o Facebook", "Lien de la vidéo": "Enlace del vídeo",
+    "Chercher la vidéo": "Buscar el vídeo", "Recherche de la vidéo…": "Buscando el vídeo…", "Colle d’abord le lien de la vidéo.": "Pega primero el enlace del vídeo.",
+    "Ce lien n’est pas valide.": "Este enlace no es válido.", "Seuls les liens TikTok et Facebook sont pris en charge.": "Solo se admiten enlaces de TikTok y Facebook.",
+    "Vidéo trouvée": "Vídeo encontrado", "Téléchargement…": "Descargando…",
+    "Le navigateur ne permet pas l’enregistrement direct. La vidéo s’ouvre dans un nouvel onglet : appuie longuement dessus puis « Télécharger la vidéo ».": "El navegador no permite guardar directamente. El vídeo se abre en una pestaña nueva: mantén pulsado y elige «Descargar vídeo».",
+    "Ton serveur ne répond pas. Vérifie l’adresse, ou vide la case pour utiliser la méthode sans serveur.": "Tu servidor no responde. Revisa la dirección, o vacía el campo para usar el método sin servidor.",
+    "Le téléchargement a échoué.": "La descarga falló.", "Le fichier reçu est vide.": "El archivo recibido está vacío.",
+    "Facebook ne peut pas être téléchargé sans serveur : il bloque les accès depuis une simple page. Renseigne ton serveur dans « Options avancées ».": "Facebook no se puede descargar sin servidor: bloquea las páginas web simples. Indica tu servidor en «Opciones avanzadas».",
+    "Impossible de joindre le service de recherche depuis cette page (blocage du navigateur ou pas d’internet). Essaie avec ton propre serveur.": "No se puede contactar con el servicio de búsqueda desde esta página (bloqueo del navegador o sin internet). Prueba con tu propio servidor.",
+    "Le service répond : {msg}": "El servicio responde: {msg}", "Vidéo introuvable. Elle est peut-être privée ou supprimée.": "Vídeo no encontrado. Puede ser privado o estar eliminado.", "Aucun fichier vidéo trouvé.": "No se encontró ningún archivo de vídeo.",
+    "TikTok : le lien est transmis au service tikwm.com pour retrouver la vidéo. Facebook : serveur requis (options avancées).": "TikTok: el enlace se envía a tikwm.com para encontrar el vídeo. Facebook: se necesita un servidor (opciones avanzadas).",
+    "Options avancées : mon propre serveur": "Opciones avanzadas: mi propio servidor",
+    "Si tu as hébergé la version complète d’Établi, colle son adresse. Elle sera utilisée à la place du service tiers (et permet Facebook).": "Si alojas la versión completa de Établi, pega su dirección. Se usará en lugar del servicio de terceros (y permite Facebook).",
+    "Adresse de ton serveur Établi": "Dirección de tu servidor Établi", "Adresse du serveur": "Dirección del servidor",
+    "Lien du fichier": "Enlace del archivo", "Récupérer": "Obtener", "Récupération…": "Obteniendo…",
+    "Ce lien est une page TikTok/Facebook, pas un fichier vidéo. Utilise l’onglet « TikTok / Facebook ».": "Este enlace es una página de TikTok/Facebook, no un archivo de vídeo. Usa la pestaña «TikTok / Facebook».",
+    "Ton navigateur bloque la récupération : ce site refuse que d’autres pages lisent ses fichiers (protection « CORS »). Télécharge le fichier à la main puis dépose-le ici.": "Tu navegador bloquea la descarga: este sitio no deja que otras páginas lean sus archivos (protección «CORS»). Descarga el archivo a mano y suéltalo aquí.",
+    "Le fichier n’a pas pu être récupéré.": "No se pudo obtener el archivo.", "Ce lien ouvre une page, pas un fichier.": "Este enlace abre una página, no un archivo.",
+    "Fichier trop lourd (120 Mo maximum).": "Archivo demasiado grande (máx. 120 MB).",
+    "Dépose une vidéo.": "Suelta un vídeo.", "Choisis une vidéo.": "Elige un vídeo.", "Qualité": "Calidad", "Compression": "Comprimiendo",
+    "Haute · 720p": "Alta · 720p", "Standard · 480p": "Estándar · 480p", "Légère · 360p": "Ligera · 360p", "Mini · 240p": "Mini · 240p",
+    "Le traitement a échoué. Essaie un mp4 ou un webm plus court.": "El proceso falló. Prueba con un mp4 o webm más corto.",
+    "Dépose une ou plusieurs images.": "Suelta una o más imágenes.", "Nom du fichier": "Nombre del archivo", "Ajoute au moins une image.": "Añade al menos una imagen.", "Créer le PDF": "Crear el PDF",
+    "Chargement de la bibliothèque PDF…": "Cargando la biblioteca PDF…", "Image {n} / {total}": "Imagen {n} / {total}",
+    "Texte à lire": "Texto para leer", "Bonjour. Ceci est l’établi, un atelier pour tes fichiers.": "Hola. Esto es Établi, un taller para tus archivos.",
+    "Voix": "Voz", "Voix proposée": "Voz sugerida", "Débit {r}": "Velocidad {r}", "Lire": "Leer", "Stop": "Parar",
+    "Ce navigateur ne lit pas le texte à voix haute.": "Este navegador no lee texto en voz alta.", "La lecture a été interrompue.": "La lectura se interrumpió.",
+    "Détecter": "Detectar", "Chargement du modèle de transcription…": "Cargando el modelo de transcripción…", "Modèle… {p} %": "Modelo… {p} %",
+    "Micro": "Micro", "Fichier": "Archivo", "Écouter": "Escuchar", "Arrêter": "Parar", "Écoute…": "Escuchando…", "Transcrire le fichier": "Transcribir el archivo",
+    "Ce navigateur ne propose pas la dictée. Utilise Chrome, ou un fichier audio.": "Este navegador no ofrece dictado. Usa Chrome o un archivo de audio.",
+    "Aucun son détecté.": "No se detectó sonido.", "La dictée a besoin d’internet.": "El dictado necesita internet.", "La dictée s’est arrêtée.": "El dictado se detuvo.", "La dictée n’a pas pu démarrer.": "El dictado no pudo iniciarse.",
+    "Le micro est bloqué. Autorise-le dans les réglages du site (cadenas dans la barre d’adresse).": "El micrófono está bloqueado. Permítelo en los ajustes del sitio (candado en la barra de direcciones).",
+    "Le micro est bloqué. Cette page est ouverte depuis un fichier (pas en https) : le navigateur refuse de demander l’autorisation. Mets la page en ligne en https ou utilise l’onglet Fichier.": "El micrófono está bloqueado. Esta página se abrió desde un archivo (no https): el navegador no pide permiso. Publica la página en https o usa la pestaña Archivo.",
+    "Dépose un audio court, ou une vidéo dont on prendra le son.": "Suelta un audio corto, o un vídeo del que se tomará el sonido.", "Langue du fichier": "Idioma del archivo",
+    "Choisis un fichier.": "Elige un archivo.", "Le fichier dépasse 90 secondes. Coupe-le, ou utilise la dictée au micro.": "El archivo supera los 90 segundos. Recórtalo, o usa el dictado por micro.",
+    "Transcription…": "Transcribiendo…", "Aucun mot reconnu.": "No se reconoció ninguna palabra.", "Terminé. Le son n’a pas quitté cet onglet.": "Listo. El sonido no salió de esta pestaña.",
+    "Extraire": "Extraer", "Extraction": "Extrayendo", "Le mp3 a échoué, passage en wav…": "El mp3 falló, cambiando a wav…", "Impossible d’extraire le son de ce fichier.": "No se puede extraer el sonido de este archivo.",
+    "Dépose les images à assembler.": "Suelta las imágenes que quieres unir.", "Horizontal": "Horizontal", "Vertical": "Vertical", "Fond": "Fondo", "Papier clair": "Papel claro", "Papier": "Papel", "Encre": "Tinta",
+    "Espace {g}": "Espacio {g}", "Assembler": "Unir", "Le collage est vide.": "El collage está vacío.",
+    "Dépose la vidéo.": "Suelta el vídeo.", "Dépose le son.": "Suelta el sonido.", "Choisis une vidéo et un son.": "Elige un vídeo y un sonido.", "Réunir": "Unir", "Assemblage": "Uniendo",
+    "Impossible de réunir ces deux fichiers. Vérifie qu’il y a bien une image et un son.": "No se pueden unir estos dos archivos. Comprueba que haya imagen y sonido.",
+    "Sons": "Audios", "Vidéos": "Vídeos", "Dépose au moins deux sons.": "Suelta al menos dos sonidos.", "Dépose au moins deux vidéos.": "Suelta al menos dos vídeos.", "Ajoute au moins deux fichiers.": "Añade al menos dos archivos.",
+    "Impossible de réunir ces sons. Vérifie que ce sont bien des fichiers audio.": "No se pueden unir estos sonidos. Comprueba que sean archivos de audio.", "Impossible de réunir ces vidéos. Essaie des fichiers plus courts.": "No se pueden unir estos vídeos. Prueba con archivos más cortos.",
+    "Dépose une image, plusieurs images, ou un PDF.": "Suelta una imagen, varias imágenes o un PDF.", "Français + anglais": "Français + English",
+    "Ajoute une image ou un PDF.": "Añade una imagen o un PDF.", "Choisis soit un PDF, soit des images, pas les deux.": "Elige un PDF o imágenes, no ambos.", "Un seul PDF à la fois.": "Un solo PDF a la vez.",
+    "Ouverture du PDF…": "Abriendo el PDF…", "Page {i} / {count}": "Página {i} / {count}", "Reconnaissance des pages scannées…": "Reconociendo las páginas escaneadas…", "Scan de la page {i}": "Escaneando la página {i}",
+    "— Page {i} —": "— Página {i} —", "— Image {i} —": "— Imagen {i} —", "Seules les 8 premières pages ont été lues.": "Solo se leyeron las 8 primeras páginas.",
+    "Aucun texte repéré. Essaie une image plus nette, ou une autre langue.": "No se encontró texto. Prueba con una imagen más nítida u otro idioma.", "Lire le texte": "Leer el texto", "Lecture terminée.": "Lectura terminada.",
+    "Lecture… {p} %": "Leyendo… {p} %", "Préparation de la lecture…": "Preparando la lectura…", "Image {i} / {n}": "Imagen {i} / {n}",
+    "Impossible de charger une bibliothèque (connexion internet nécessaire).": "No se pudo cargar una biblioteca (se necesita internet).",
+    "Téléchargement du moteur vidéo (une seule fois)…": "Descargando el motor de vídeo (solo una vez)…", "Le moteur vidéo n’a pas pu démarrer : {msg}": "El motor de vídeo no pudo iniciarse: {msg}",
+    "Ça n’a pas marché. Réessaie.": "No funcionó. Inténtalo de nuevo.",
+    "Limite du jour atteinte": "Límite diario alcanzado", "Tu as utilisé tes {n} essais gratuits aujourd’hui.": "Has usado tus {n} pruebas gratuitas de hoy.",
+    "Regarder une publicité (+{n})": "Ver un anuncio (+{n})", "Passer Premium": "Pasar a Premium", "Plus tard": "Más tarde",
+    "Espace publicitaire": "Espacio publicitario", "Publicité · {s} s": "Anuncio · {s} s", "Continuer": "Continuar", "Pub": "Anuncios", "Sans pub": "Quitar anuncios",
+    "Statut": "Estado", "Version gratuite : {n} utilisations aujourd’hui.": "Versión gratuita: {n} usos hoy.", "Premium actif.": "Premium activo.",
+    "Aucune publicité": "Sin anuncios", "Utilisations illimitées": "Usos ilimitados", "Mensuel": "Mensual", "Annuel": "Anual", "{p} / mois": "{p} / mes", "{p} / an": "{p} / año",
+    "Activer Premium (démo)": "Activar Premium (demo)", "Revenir à la version gratuite": "Volver a la versión gratuita",
+    "Mode démo : aucun paiement réel n’est branché. Ce bouton active simplement Premium sur cet appareil pour tester l’affichage.": "Modo demo: no hay ningún pago real conectado. Este botón solo activa Premium en este dispositivo para probar las pantallas.",
+  },
+};
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch {} },
+};
+let LANG = (() => {
+  const saved = store.get("etabli-lang");
+  if (saved && LANGS[saved]) return saved;
+  const n = (navigator.language || "fr").slice(0, 2).toLowerCase();
+  return n === "fr" ? "fr" : n === "es" ? "es" : "en";
+})();
+function t(fr, vars) {
+  let s = (LANG !== "fr" && I18N[LANG] && I18N[LANG][fr]) || fr;
+  if (vars) s = s.replace(/\{(\w+)\}/g, (_, k) => (vars[k] == null ? "" : vars[k]));
+  return s;
+}
+
+/* ============ Outils de base ============ */
 function h(tag, attrs, ...kids) {
   const e = document.createElement(tag);
   for (const [k, v] of Object.entries(attrs || {})) {
@@ -89,8 +326,8 @@ function h(tag, attrs, ...kids) {
   return e;
 }
 const uid = () => Math.random().toString(36).slice(2) + Date.now().toString(36);
-const msg = (e) => (e && e.message) || "Ça n’a pas marché. Réessaie.";
-const fmt = (n) => n < 1024 ? n + " o" : n < 1048576 ? Math.round(n / 1024) + " Ko" : (n / 1048576).toFixed(1) + " Mo";
+const msg = (e) => (e && e.message) || t("Ça n’a pas marché. Réessaie.");
+const fmt = (n) => n < 1024 ? n + " B" : n < 1048576 ? Math.round(n / 1024) + " KB" : (n / 1048576).toFixed(1) + " MB";
 const baseName = (n) => n.replace(/\.[^.]+$/, "");
 const KIND = { image: "Image", video: "Vidéo", audio: "Audio", pdf: "PDF", text: "Texte" };
 function kindFrom(name, type) {
@@ -123,26 +360,81 @@ function loadScript(url) {
   if (!scripts[url]) scripts[url] = new Promise((ok, ko) => {
     const s = h("script", { src: url });
     s.onload = ok;
-    s.onerror = () => { delete scripts[url]; ko(new Error("Impossible de charger une bibliothèque (connexion internet nécessaire).")); };
+    s.onerror = () => { delete scripts[url]; ko(new Error(t("Impossible de charger une bibliothèque (connexion internet nécessaire)."))); };
     document.head.append(s);
   });
   return scripts[url];
 }
 
-/* ---------- bibliothèque ---------- */
+/* ============ Offre gratuite / publicités / Premium (MAQUETTE) ============ */
+/* Rien de réel ici : compteur local, « publicité » factice, Premium sans paiement.
+   À brancher plus tard sur un vrai service (publicités, paiement, comptes). */
+const FREE_DAILY = 5, AD_BONUS = 2, AD_SECONDS = 5;
+const todayKey = () => new Date().toISOString().slice(0, 10);
+function readPlan() {
+  const s = { day: todayKey(), used: 0, bonus: 0, premium: false };
+  try {
+    const r = JSON.parse(store.get("etabli-plan") || "null");
+    if (r && typeof r === "object") {
+      s.premium = r.premium === true;
+      if (r.day === s.day) { s.used = Number(r.used) || 0; s.bonus = Number(r.bonus) || 0; }
+    }
+  } catch {}
+  return s;
+}
+const writePlan = (s) => store.set("etabli-plan", JSON.stringify(s));
+function remaining() { const s = readPlan(); return s.premium ? Infinity : Math.max(0, FREE_DAILY + s.bonus - s.used); }
+function spend() { const s = readPlan(); if (!s.premium) { s.used += 1; writePlan(s); } refreshPlan(); }
+function refreshPlan() {
+  const s = readPlan(), pill = document.getElementById("planpill"), ad = document.getElementById("ad");
+  if (pill) {
+    pill.className = "planpill" + (s.premium ? " prem" : "");
+    pill.textContent = s.premium ? t("Premium") : t("Gratuit · {n} restant(s)", { n: remaining() });
+  }
+  if (ad) {
+    ad.replaceChildren();
+    ad.hidden = s.premium; document.body.style.paddingBottom = s.premium ? "0" : "64px";
+    if (!s.premium) ad.append(h("span", null, t("Espace publicitaire")), h("button", { onclick: () => show("premium") }, t("Sans pub")));
+  }
+}
+function gate() { return remaining() > 0 ? Promise.resolve(true) : paywall(); }
+function paywall() {
+  return new Promise((resolve) => {
+    const veil = h("div", { class: "veil" });
+    const close = (ok) => { veil.remove(); resolve(ok); };
+    const askView = () => veil.replaceChildren(h("div", { class: "modal", role: "dialog", "aria-modal": "true" },
+      h("h2", null, t("Limite du jour atteinte")),
+      h("p", { class: "note", style: "margin-top:0" }, t("Tu as utilisé tes {n} essais gratuits aujourd’hui.", { n: FREE_DAILY })),
+      h("button", { class: "btn", onclick: adView }, t("Regarder une publicité (+{n})", { n: AD_BONUS })),
+      h("button", { class: "ghost", onclick: () => { close(false); show("premium"); } }, t("Passer Premium")),
+      h("button", { class: "ghost", style: "border-color:var(--line);color:var(--mute)", onclick: () => close(false) }, t("Plus tard"))));
+    const adView = () => {
+      let left = AD_SECONDS;
+      const label = h("p", { class: "note", style: "margin-top:12px" }, t("Publicité · {s} s", { s: left }));
+      const go = h("button", { class: "btn", disabled: true, onclick: () => { const s = readPlan(); s.bonus += AD_BONUS; writePlan(s); refreshPlan(); close(true); } }, t("Continuer"));
+      veil.replaceChildren(h("div", { class: "modal", role: "dialog", "aria-modal": "true" }, h("div", { class: "adbox" }, t("Espace publicitaire")), label, go));
+      const timer = setInterval(() => {
+        left -= 1;
+        if (left <= 0) { clearInterval(timer); label.textContent = ""; go.disabled = false; }
+        else label.textContent = t("Publicité · {s} s", { s: left });
+      }, 1000);
+    };
+    askView(); document.body.append(veil);
+  });
+}
+
+/* ============ Bibliothèque ============ */
 const lib = { items: [] };
+function countText() { const n = lib.items.length; return n === 0 ? t("Aucun fichier") : n === 1 ? t("1 fichier") : t("{n} fichiers", { n }); }
 function addMedia(name, blob) {
   const item = { id: uid(), name, kind: kindFrom(name, blob.type), blob, url: URL.createObjectURL(blob) };
   lib.items.unshift(item);
-  const n = lib.items.length;
-  document.getElementById("count").textContent = n === 1 ? "1 fichier" : n + " fichiers";
   return item;
 }
 function removeMedia(id) {
   const f = lib.items.find((i) => i.id === id);
   if (f) URL.revokeObjectURL(f.url);
   lib.items = lib.items.filter((i) => i.id !== id);
-  document.getElementById("count").textContent = lib.items.length === 0 ? "Session vide" : lib.items.length + " fichier(s)";
 }
 function frame(item) {
   if (item.kind === "image") return h("img", { src: item.url, alt: item.name });
@@ -153,25 +445,27 @@ function frame(item) {
 }
 function resultCard(item) {
   return h("div", { class: "card" },
-    h("p", { class: "note ok", style: "margin-top:0" }, "Ajouté à la bibliothèque · " + item.name),
+    h("p", { class: "note ok", style: "margin-top:0" }, t("Ajouté à la bibliothèque · {name}", { name: item.name })),
     h("div", { style: "margin-top:10px" }, frame(item)),
-    h("div", { class: "row" }, h("button", { class: "btn", onclick: () => saveAs(item.blob, item.name) }, "Télécharger")));
+    h("div", { class: "row" }, h("button", { class: "btn", onclick: () => saveAs(item.blob, item.name) }, t("Télécharger"))));
 }
 
-/* ---------- composants ---------- */
-function sheet(title, lede, ...kids) {
-  return h("section", { class: "sheet" }, h("h1", null, title), h("p", { class: "lede" }, lede), h("div", { class: "body" }, kids));
+/* ============ Composants ============ */
+function sheet(title, help, ...kids) {
+  const hp = h("p", { class: "lede", hidden: true }, help);
+  const bt = h("button", { class: "info", type: "button", "aria-label": t("Aide"), "aria-expanded": "false",
+    onclick: () => { hp.hidden = !hp.hidden; bt.setAttribute("aria-expanded", String(!hp.hidden)); } }, "i");
+  return h("section", { class: "sheet" }, h("div", { class: "titlerow" }, h("h1", null, title), bt), hp, h("div", { class: "body" }, kids));
 }
 function field(label, control) { return h("label", { class: "f" }, h("span", null, label), control); }
 function nameField(def) {
-  const i = h("input", { type: "text", value: def, maxlength: 60, "aria-label": "Nom du fichier", placeholder: def });
-  return { node: field("Nom du fichier", i), get() {
+  const i = h("input", { type: "text", value: def, maxlength: 60, "aria-label": t("Nom du fichier"), placeholder: def });
+  return { node: field(t("Nom du fichier"), i), get() {
     const v = i.value.trim().replace(/[\\/:*?"<>|]+/g, "-").replace(/\.(pdf|png|mp3|mp4|wav|txt)$/i, "").slice(0, 60);
     return v || def; } };
 }
 function select(options, value, onchange) {
-  const s = h("select", { onchange: (e) => onchange(e.target.value) },
-    options.map(([v, l]) => h("option", { value: v }, l)));
+  const s = h("select", { onchange: (e) => onchange(e.target.value) }, options.map(([v, l]) => h("option", { value: v }, l)));
   s.value = value; return s;
 }
 function drop(accept, multiple, label, onFiles) {
@@ -180,31 +474,29 @@ function drop(accept, multiple, label, onFiles) {
     ondragover: (e) => { e.preventDefault(); box.classList.add("over"); },
     ondragleave: () => box.classList.remove("over"),
     ondrop: (e) => { e.preventDefault(); box.classList.remove("over"); const f = [...e.dataTransfer.files]; if (f.length) onFiles(multiple ? f : f.slice(0, 1)); } },
-    h("p", null, label), h("button", { class: "ghost", type: "button", onclick: () => input.click() }, "Parcourir"), input);
+    h("p", null, label), h("button", { class: "ghost", type: "button", onclick: () => input.click() }, t("Parcourir")), input);
   return box;
 }
 function libPicker(kinds, onPick) {
   const wrap = h("div");
   const items = lib.items.filter((i) => kinds.includes(i.kind));
   if (!items.length) return wrap;
-  wrap.append(h("p", { class: "note" }, "Depuis la bibliothèque"),
+  wrap.append(h("p", { class: "note" }, t("Depuis la bibliothèque")),
     h("div", { class: "scroll" }, items.map((i) => h("button", { class: "pill", type: "button", style: "max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap", onclick: () => onPick(i) }, i.name))));
   return wrap;
 }
-/* Un seul fichier choisi */
 function singlePick(accept, label, kinds) {
   const state = { pick: null };
   const chosen = h("div");
   const set = (p) => {
     state.pick = p; chosen.replaceChildren();
-    if (p) chosen.append(h("div", { class: "chosen" }, h("span", null, p.name + " · " + fmt(p.blob.size)), h("button", { type: "button", onclick: () => set(null) }, "Retirer")));
+    if (p) chosen.append(h("div", { class: "chosen" }, h("span", null, p.name + " · " + fmt(p.blob.size)), h("button", { type: "button", onclick: () => set(null) }, t("Retirer"))));
   };
   const node = h("div", null,
     drop(accept, false, label, (f) => set({ name: f[0].name, blob: f[0] })),
     libPicker(kinds, (i) => set({ name: i.name, blob: i.blob })), chosen);
   return { node, state };
 }
-/* Liste ordonnée de fichiers */
 function multiPick(accept, label, kinds, limit) {
   const state = { items: [] };
   const list = h("div");
@@ -212,13 +504,13 @@ function multiPick(accept, label, kinds, limit) {
     list.replaceChildren();
     if (!state.items.length) return;
     list.append(h("ul", { class: "list" }, state.items.map((it, i) => h("li", null,
-      it.blob.type.startsWith("image/") ? h("img", { src: it.url, alt: "" }) : h("span", { style: "width:44px;height:44px;display:grid;place-items:center;font-size:11px;color:var(--mute)" }, "fichier"),
+      it.blob.type.startsWith("image/") ? h("img", { src: it.url, alt: "" }) : h("span", { style: "width:44px;height:44px;display:grid;place-items:center;font-size:11px;color:var(--mute)" }, t("fichier")),
       h("span", { class: "n" }, it.name),
-      h("button", { class: "ic", "aria-label": "Monter", disabled: i === 0, onclick: () => { move(i, -1); } }, "↑"),
-      h("button", { class: "ic", "aria-label": "Descendre", disabled: i === state.items.length - 1, onclick: () => { move(i, 1); } }, "↓"),
-      h("button", { class: "ic", "aria-label": "Retirer", onclick: () => { const [r] = state.items.splice(i, 1); if (r.owned) URL.revokeObjectURL(r.url); draw(); } }, "✕")))));
+      h("button", { class: "ic", "aria-label": t("Monter"), disabled: i === 0, onclick: () => move(i, -1) }, "↑"),
+      h("button", { class: "ic", "aria-label": t("Descendre"), disabled: i === state.items.length - 1, onclick: () => move(i, 1) }, "↓"),
+      h("button", { class: "ic", "aria-label": t("Retirer"), onclick: () => { const [r] = state.items.splice(i, 1); if (r.owned) URL.revokeObjectURL(r.url); draw(); } }, "✕")))));
   };
-  const move = (i, d) => { const t = i + d; if (t < 0 || t >= state.items.length) return; const [x] = state.items.splice(i, 1); state.items.splice(t, 0, x); draw(); };
+  const move = (i, d) => { const k = i + d; if (k < 0 || k >= state.items.length) return; const [x] = state.items.splice(i, 1); state.items.splice(k, 0, x); draw(); };
   const add = (name, blob, url, owned) => { if (state.items.length < limit) { state.items.push({ name, blob, url, owned }); draw(); } };
   const clear = () => { state.items.forEach((r) => r.owned && URL.revokeObjectURL(r.url)); state.items = []; draw(); };
   const node = h("div", null,
@@ -226,30 +518,32 @@ function multiPick(accept, label, kinds, limit) {
     libPicker(kinds, (i) => add(i.name, i.blob, i.url, false)), list);
   return { node, state, clear, add };
 }
-async function runTask(btn, out, task) {
+/* free = true : l'action ne consomme pas d'essai gratuit */
+async function runTask(btn, out, task, free) {
+  if (!free && !(await gate())) return;
   btn.disabled = true; out.replaceChildren();
   const st = h("p", { class: "note" }); out.append(st);
   try {
-    const made = await task((t) => { st.textContent = t; });
+    const made = await task((x) => { st.textContent = x; });
     st.remove();
-    if (made) out.append(resultCard(addMedia(made.name, made.blob)));
+    if (made) { out.append(resultCard(addMedia(made.name, made.blob))); if (!free) spend(); }
   } catch (e) { st.className = "note err"; st.textContent = msg(e); }
   finally { btn.disabled = false; }
 }
 function textResult(text, name, out) {
-  out.replaceChildren(h("textarea", { readonly: true, "aria-label": "Résultat" }, text),
+  out.replaceChildren(h("textarea", { readonly: true, "aria-label": t("Résultat") }, text),
     h("div", { class: "row" },
-      h("button", { class: "ghost", onclick: async (e) => { try { await navigator.clipboard.writeText(text); e.target.textContent = "Copié"; } catch { e.target.textContent = "Sélectionne le texte"; } } }, "Copier"),
-      h("button", { class: "ghost", onclick: (e) => { addMedia(name, new Blob([text], { type: "text/plain" })); e.target.textContent = "Ajouté"; } }, "Garder dans la bibliothèque")));
+      h("button", { class: "ghost", onclick: async (e) => { try { await navigator.clipboard.writeText(text); e.target.textContent = t("Copié"); } catch { e.target.textContent = t("Sélectionne le texte"); } } }, t("Copier")),
+      h("button", { class: "ghost", onclick: (e) => { addMedia(name, new Blob([text], { type: "text/plain" })); e.target.textContent = t("Ajouté"); } }, t("Garder dans la bibliothèque"))));
 }
 
-/* ---------- moteur vidéo (ffmpeg.wasm) ---------- */
+/* ============ Moteur vidéo (ffmpeg.wasm) ============ */
 const FF_BASE = "https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd";
 const FF_CORE = "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd";
 let ffPromise = null, ffReport = null, ffQueue = Promise.resolve();
 async function getFF(onStatus) {
   if (!ffPromise) ffPromise = (async () => {
-    onStatus("Téléchargement du moteur vidéo (une seule fois)…");
+    onStatus(t("Téléchargement du moteur vidéo (une seule fois)…"));
     await loadScript(FF_BASE + "/ffmpeg.js");
     await loadScript("https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/umd/index.js");
     const ff = new FFmpegWASM.FFmpeg();
@@ -261,10 +555,9 @@ async function getFF(onStatus) {
       classWorkerURL: await toBlobURL(FF_BASE + "/814.ffmpeg.js", "text/javascript"),
     });
     return ff;
-  })().catch((e) => { ffPromise = null; throw new Error("Le moteur vidéo n’a pas pu démarrer : " + msg(e)); });
+  })().catch((e) => { ffPromise = null; throw new Error(t("Le moteur vidéo n’a pas pu démarrer : {msg}", { msg: msg(e) })); });
   return ffPromise;
 }
-/* files: [{name, blob}] (noms déjà sûrs), attempts: liste d'arguments à essayer */
 function ffRun(files, attempts, out, mime, label, onStatus, failMsg) {
   const task = async () => {
     const ff = await getFF(onStatus);
@@ -288,172 +581,170 @@ function ffRun(files, attempts, out, mime, label, onStatus, failMsg) {
   return run;
 }
 
-/* ---------- panneaux ---------- */
+/* ============ Panneaux ============ */
 function LibraryPanel() {
-  const out = h("div");
   const list = h("div");
   const draw = () => {
     list.replaceChildren();
-    if (!lib.items.length) { list.append(h("p", { class: "note", style: "margin-top:24px" }, "Encore vide. Les résultats des outils arriveront ici.")); return; }
+    if (!lib.items.length) { list.append(h("div", { class: "empty" }, h("b", null, "📂"), t("Aucun fichier pour l’instant"))); return; }
     list.append(h("div", { class: "grid" }, lib.items.map((it) => h("div", { class: "card" },
       h("div", { style: "background:var(--paper)" }, frame(it)),
       h("div", { class: "meta" },
-        h("div", { class: "t" }, h("b", null, it.name), h("small", null, KIND[it.kind] + " · " + fmt(it.blob.size))),
-        h("button", { class: "ic", style: "border:1px solid var(--line)", "aria-label": "Télécharger", onclick: () => saveAs(it.blob, it.name) }, "⬇"),
-        h("button", { class: "ic", style: "border:1px solid var(--line)", "aria-label": "Retirer", onclick: () => { removeMedia(it.id); draw(); } }, "🗑"))))));
+        h("div", { class: "t" }, h("b", null, it.name), h("small", null, t(KIND[it.kind]) + " · " + fmt(it.blob.size))),
+        h("button", { class: "ic", style: "border:1px solid var(--line)", "aria-label": t("Télécharger"), onclick: () => saveAs(it.blob, it.name) }, "⬇"),
+        h("button", { class: "ic", style: "border:1px solid var(--line)", "aria-label": t("Retirer"), onclick: () => { removeMedia(it.id); draw(); } }, "🗑"))))));
   };
   draw();
-  return sheet("Bibliothèque", "Tes fichiers de cette session. Ils restent dans cet onglet : rien n’est envoyé nulle part. Ferme la page et ils disparaissent : pense à les télécharger.",
-    drop("image/*,video/*,audio/*,.pdf,.txt", true, "Dépose une image, une vidéo, un son, un PDF ou un texte.", (files) => { files.forEach((f) => addMedia(f.name, f)); draw(); }),
-    out, list);
+  return sheet(t("Bibliothèque"), t("Tes fichiers restent sur cet appareil et disparaissent à la fermeture de la page. Pense à les télécharger."),
+    drop("image/*,video/*,audio/*,.pdf,.txt", true, t("Dépose une image, une vidéo, un son, un PDF ou un texte."), (files) => { files.forEach((f) => addMedia(f.name, f)); draw(); }),
+    list);
 }
 
 function BrowserPanel() {
-  const PAGES = [["Wikipédia", "https://fr.wikipedia.org/wiki/Atelier"], ["Wiktionnaire", "https://fr.wiktionary.org/wiki/fran%C3%A7ais"], ["Cartes", "https://www.openstreetmap.org/"]];
+  const PAGES = [[t("Wikipédia"), "https://fr.wikipedia.org/wiki/Atelier"], [t("Wiktionnaire"), "https://fr.wiktionary.org/wiki/fran%C3%A7ais"], [t("Cartes"), "https://www.openstreetmap.org/"]];
   let marks = [];
-  try { marks = JSON.parse(localStorage.getItem("etabli-pages") || "[]").filter((m) => m && typeof m.href === "string").slice(0, 12); } catch {}
-  const addr = h("input", { type: "url", "aria-label": "Adresse", value: PAGES[0][1], placeholder: "https://" });
+  try { marks = JSON.parse(store.get("etabli-pages") || "[]").filter((m) => m && typeof m.href === "string").slice(0, 12); } catch {}
+  const addr = h("input", { type: "url", "aria-label": t("Adresse"), value: PAGES[0][1], placeholder: "https://" });
   const err = h("p", { class: "note err" });
-  const web = h("iframe", { class: "web", title: "Page consultée", src: PAGES[0][1], sandbox: "allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox", referrerpolicy: "no-referrer" });
+  const web = h("iframe", { class: "web", title: t("Page consultée"), src: PAGES[0][1], sandbox: "allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox", referrerpolicy: "no-referrer" });
   const chips = h("div", { class: "scroll" });
   let current = PAGES[0][1];
   const open = (raw) => {
     try {
-      const t = raw.trim(); if (!t) throw new Error("Colle une adresse.");
-      const u = new URL(/^https?:\/\//i.test(t) ? t : "https://" + t);
-      if (!/^https?:$/.test(u.protocol)) throw new Error("Seuls les liens http et https sont acceptés.");
+      const x = raw.trim(); if (!x) throw new Error(t("Colle une adresse."));
+      let u; try { u = new URL(/^https?:\/\//i.test(x) ? x : "https://" + x); } catch { throw new Error(t("Cette adresse n’est pas valide.")); }
+      if (!/^https?:$/.test(u.protocol)) throw new Error(t("Seuls les liens http et https sont acceptés."));
       current = u.toString(); addr.value = current; web.src = current; err.textContent = "";
-    } catch (e) { err.textContent = e.message.includes("Invalid") ? "Cette adresse n’est pas valide." : e.message; }
+    } catch (e) { err.textContent = e.message; }
   };
-  const drawChips = () => {
-    chips.replaceChildren(...[...PAGES.map(([l, hr]) => [l, hr]), ...marks.map((m) => [m.label, m.href])].map(([l, hr]) => h("button", { class: "pill", type: "button", onclick: () => open(hr) }, l)));
-  };
+  const drawChips = () => chips.replaceChildren(...[...PAGES, ...marks.map((m) => [m.label, m.href])].map(([l, hr]) => h("button", { class: "pill", type: "button", onclick: () => open(hr) }, l)));
   drawChips();
-  return sheet("Navigateur", "Une fenêtre pour consulter une page. Beaucoup de sites (Google, YouTube, TikTok, Facebook…) refusent de s’afficher dans une autre page : s’il reste blanc, ouvre-le dans un nouvel onglet.",
+  return sheet(t("Navigateur"), t("Certains sites refusent de s’afficher ici. Utilise alors « Ouvrir dans un onglet »."),
     h("form", { class: "row", style: "margin-top:0;flex-wrap:nowrap;flex-direction:column", onsubmit: (e) => { e.preventDefault(); open(addr.value); } },
-      addr, h("button", { class: "btn", type: "submit" }, "Ouvrir")),
+      addr, h("button", { class: "btn", type: "submit" }, t("Ouvrir"))),
     chips,
     h("div", { class: "row" },
-      h("button", { class: "ghost", type: "button", onclick: () => { try { const label = new URL(current).hostname.replace(/^www\./, ""); marks = [{ label, href: current }, ...marks.filter((m) => m.href !== current)].slice(0, 12); localStorage.setItem("etabli-pages", JSON.stringify(marks)); } catch {} drawChips(); } }, "Garder cette adresse"),
-      h("button", { class: "ghost", type: "button", onclick: () => window.open(current, "_blank", "noopener") }, "Ouvrir dans un onglet")),
+      h("button", { class: "ghost", type: "button", onclick: () => { try { const label = new URL(current).hostname.replace(/^www\./, ""); marks = [{ label, href: current }, ...marks.filter((m) => m.href !== current)].slice(0, 12); store.set("etabli-pages", JSON.stringify(marks)); } catch {} drawChips(); } }, t("Garder cette adresse")),
+      h("button", { class: "ghost", type: "button", onclick: () => window.open(current, "_blank", "noopener") }, t("Ouvrir dans un onglet"))),
     err, web);
 }
 
 function SocialPanel() {
-  let server = "";
-  try { server = localStorage.getItem("etabli-server") || ""; } catch {}
-  const link = h("input", { type: "url", placeholder: "Colle le lien TikTok ou Facebook", "aria-label": "Lien de la vidéo" });
-  const srv = h("input", { type: "url", placeholder: "https://mon-app.vercel.app", value: server, "aria-label": "Adresse du serveur" });
+  const link = h("input", { type: "url", placeholder: t("Colle le lien TikTok ou Facebook"), "aria-label": t("Lien de la vidéo") });
+  const srv = h("input", { type: "url", placeholder: "https://mon-app.vercel.app", value: store.get("etabli-server") || "", "aria-label": t("Adresse du serveur") });
   const out = h("div");
-  const hostOf = (raw) => { try { const t = raw.trim(); return new URL(/^https?:\/\//i.test(t) ? t : "https://" + t).hostname.toLowerCase(); } catch { return ""; } };
+  const hostOf = (raw) => { try { const x = raw.trim(); return new URL(/^https?:\/\//i.test(x) ? x : "https://" + x).hostname.toLowerCase(); } catch { return ""; } };
   const saveVideo = async (box, url, name) => {
-    box.replaceChildren(h("p", { class: "note" }, "Téléchargement…"));
+    box.replaceChildren(h("p", { class: "note" }, t("Téléchargement…")));
     try {
       const r = await fetch(url);
-      if (!r.ok) throw new Error("refus");
+      if (!r.ok) throw new Error("refused");
       const blob = await r.blob();
-      if (!blob.size) throw new Error("vide");
+      if (!blob.size) throw new Error("empty");
       box.replaceChildren(resultCard(addMedia(name, new Blob([blob], { type: "video/mp4" }))));
     } catch {
       window.open(url, "_blank", "noopener");
-      box.replaceChildren(h("p", { class: "note" }, "Le navigateur ne permet pas l’enregistrement direct. La vidéo s’ouvre dans un nouvel onglet : appuie longuement dessus puis « Télécharger la vidéo »."));
+      box.replaceChildren(h("p", { class: "note" }, t("Le navigateur ne permet pas l’enregistrement direct. La vidéo s’ouvre dans un nouvel onglet : appuie longuement dessus puis « Télécharger la vidéo ».")));
     }
   };
   const showFound = (url, title, cover) => {
     const box = h("div");
+    const safe = (title || "video").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 30) || "video";
     out.replaceChildren(h("div", { class: "card" },
-      h("p", { class: "note ok", style: "margin-top:0" }, "Vidéo trouvée" + (title ? " · " + title : "")),
+      h("p", { class: "note ok", style: "margin-top:0" }, t("Vidéo trouvée") + (title ? " · " + title : "")),
       h("div", { style: "margin-top:10px" }, h("video", { src: url, poster: cover || null, controls: true, playsinline: true })),
-      h("div", { class: "row" }, h("button", { class: "btn", onclick: () => saveVideo(box, url, "tiktok-" + (title || "video").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 30) + ".mp4") }, "Télécharger"))), box);
+      h("div", { class: "row" }, h("button", { class: "btn", onclick: () => saveVideo(box, url, "tiktok-" + safe + ".mp4") }, t("Télécharger")))), box);
   };
   const btn = h("button", { class: "btn", style: "margin-top:16px", onclick: async () => {
-    out.replaceChildren(); const st = h("p", { class: "note" }, "Recherche de la vidéo…"); out.append(st);
-    const fail = (t) => { st.className = "note err"; st.textContent = t; };
+    out.replaceChildren(); const st = h("p", { class: "note" }, t("Recherche de la vidéo…")); out.append(st);
+    const fail = (x) => { st.className = "note err"; st.textContent = x; };
     btn.disabled = true;
     try {
-      const raw = link.value.trim(); if (!raw) return fail("Colle d’abord le lien de la vidéo.");
-      const host = hostOf(raw); if (!host) return fail("Ce lien n’est pas valide.");
+      const raw = link.value.trim(); if (!raw) return fail(t("Colle d’abord le lien de la vidéo."));
+      const host = hostOf(raw); if (!host) return fail(t("Ce lien n’est pas valide."));
       const isFb = /(facebook\.com|fb\.watch|fb\.com)$/.test(host), isTt = /(tiktok\.com|tt\.site)$/.test(host);
-      if (!isFb && !isTt) return fail("Seuls les liens TikTok et Facebook sont pris en charge.");
+      if (!isFb && !isTt) return fail(t("Seuls les liens TikTok et Facebook sont pris en charge."));
+      if (!(await gate())) { out.replaceChildren(); return; }
+      st.textContent = t("Recherche de la vidéo…"); out.replaceChildren(st);
       const base = srv.value.trim().replace(/\/+$/, "");
       if (base) {
-        try { localStorage.setItem("etabli-server", base); } catch {}
-        let res; try { res = await fetch(base + "/api/social?url=" + encodeURIComponent(raw)); } catch { return fail("Ton serveur ne répond pas. Vérifie l’adresse, ou vide la case pour utiliser la méthode sans serveur."); }
-        if (!res.ok) { let m = "Le téléchargement a échoué."; try { const d = await res.json(); if (d.error) m = d.error; } catch {} return fail(m); }
-        const blob = await res.blob(); if (!blob.size) return fail("Le fichier reçu est vide.");
-        out.replaceChildren(resultCard(addMedia(res.headers.get("x-filename") || "video.mp4", new Blob([blob], { type: "video/mp4" })))); return;
+        store.set("etabli-server", base);
+        let res; try { res = await fetch(base + "/api/social?url=" + encodeURIComponent(raw)); } catch { return fail(t("Ton serveur ne répond pas. Vérifie l’adresse, ou vide la case pour utiliser la méthode sans serveur.")); }
+        if (!res.ok) { let m = t("Le téléchargement a échoué."); try { const d = await res.json(); if (d.error) m = d.error; } catch {} return fail(m); }
+        const blob = await res.blob(); if (!blob.size) return fail(t("Le fichier reçu est vide."));
+        out.replaceChildren(resultCard(addMedia(res.headers.get("x-filename") || "video.mp4", new Blob([blob], { type: "video/mp4" })))); spend(); return;
       }
-      if (isFb) return fail("Facebook ne peut pas être téléchargé sans serveur : il bloque les accès depuis une simple page. Renseigne ton serveur dans « Options avancées ».");
+      if (isFb) return fail(t("Facebook ne peut pas être téléchargé sans serveur : il bloque les accès depuis une simple page. Renseigne ton serveur dans « Options avancées »."));
       let data;
       try { const r = await fetch("https://www.tikwm.com/api/?url=" + encodeURIComponent(raw) + "&hd=1"); data = await r.json(); }
-      catch { return fail("Impossible de joindre le service de recherche depuis cette page (blocage du navigateur ou pas d’internet). Essaie en ouvrant l’app depuis une adresse https, ou avec ton propre serveur."); }
+      catch { return fail(t("Impossible de joindre le service de recherche depuis cette page (blocage du navigateur ou pas d’internet). Essaie avec ton propre serveur.")); }
       const d = data && data.code === 0 && data.data;
-      if (!d) return fail((data && data.msg) ? "Le service répond : " + data.msg : "Vidéo introuvable. Elle est peut-être privée ou supprimée.");
+      if (!d) return fail((data && data.msg) ? t("Le service répond : {msg}", { msg: data.msg }) : t("Vidéo introuvable. Elle est peut-être privée ou supprimée."));
       const mediaUrl = (u) => (u ? (u.startsWith("http") ? u : "https://www.tikwm.com" + u) : "");
-      const url = mediaUrl(d.hdplay) || mediaUrl(d.play); if (!url) return fail("Aucun fichier vidéo trouvé.");
-      showFound(url, (d.title || "").slice(0, 60), mediaUrl(d.cover));
+      const url = mediaUrl(d.hdplay) || mediaUrl(d.play); if (!url) return fail(t("Aucun fichier vidéo trouvé."));
+      showFound(url, (d.title || "").slice(0, 60), mediaUrl(d.cover)); spend();
     } finally { btn.disabled = false; }
-  } }, "Chercher la vidéo");
-  return sheet("TikTok / Facebook", "Colle le lien d’une vidéo publique, vérifie qu’elle s’affiche, puis télécharge-la. À utiliser seulement pour tes propres vidéos ou avec l’accord de l’auteur.",
-    field("Lien de la vidéo", link), btn, out,
-    h("p", { class: "note" }, "TikTok : sans serveur, le lien est transmis au service tiers tikwm.com pour retrouver la vidéo. Facebook : un serveur est nécessaire."),
-    h("details", { style: "margin-top:14px" }, h("summary", { style: "cursor:pointer;min-height:44px;display:flex;align-items:center" }, "Options avancées : mon propre serveur"),
-      h("p", { class: "note", style: "margin-top:0" }, "Si tu as hébergé la version complète d’Établi, colle son adresse. Elle sera utilisée à la place du service tiers (et permet Facebook)."),
-      field("Adresse de ton serveur Établi", srv)));
+  } }, t("Chercher la vidéo"));
+  return sheet(t("TikTok / Facebook"), t("Pour vidéos publiques. À utiliser seulement pour tes propres vidéos ou avec l’accord de l’auteur."),
+    field(t("Lien de la vidéo"), link), btn, out,
+    h("p", { class: "note" }, t("TikTok : le lien est transmis au service tikwm.com pour retrouver la vidéo. Facebook : serveur requis (options avancées).")),
+    h("details", { style: "margin-top:14px" }, h("summary", { style: "cursor:pointer;min-height:44px;display:flex;align-items:center" }, t("Options avancées : mon propre serveur")),
+      h("p", { class: "note", style: "margin-top:0" }, t("Si tu as hébergé la version complète d’Établi, colle son adresse. Elle sera utilisée à la place du service tiers (et permet Facebook).")),
+      field(t("Adresse de ton serveur Établi"), srv)));
 }
 
 function ImportPanel() {
-  const link = h("input", { type: "url", placeholder: "https://exemple.org/film.mp4", "aria-label": "Lien du fichier" });
+  const link = h("input", { type: "url", placeholder: "https://example.org/video.mp4", "aria-label": t("Lien du fichier") });
   const out = h("div");
   const btn = h("button", { class: "btn", style: "margin-top:16px", onclick: () => runTask(btn, out, async (st) => {
     let u;
-    try { const t = link.value.trim(); u = new URL(/^https?:\/\//i.test(t) ? t : "https://" + t); } catch { throw new Error("Cette adresse n’est pas valide."); }
-    if (/(tiktok|tt\.site|facebook|fb\.watch|fb\.com|instagram|youtube|youtu\.be)/i.test(u.hostname)) throw new Error("Ce lien est une page TikTok/Facebook, pas un fichier vidéo. Utilise l’onglet « TikTok / Facebook ».");
-    st("Récupération…");
+    try { const x = link.value.trim(); u = new URL(/^https?:\/\//i.test(x) ? x : "https://" + x); } catch { throw new Error(t("Cette adresse n’est pas valide.")); }
+    if (/(tiktok|tt\.site|facebook|fb\.watch|fb\.com|instagram|youtube|youtu\.be)/i.test(u.hostname)) throw new Error(t("Ce lien est une page TikTok/Facebook, pas un fichier vidéo. Utilise l’onglet « TikTok / Facebook »."));
+    st(t("Récupération…"));
     let res;
-    try { res = await fetch(u); } catch { throw new Error("Ton navigateur bloque la récupération : ce site refuse que d’autres pages lisent ses fichiers (protection « CORS »). Ce n’est pas un défaut de l’app, seul un serveur peut contourner ça. Télécharge le fichier à la main puis dépose-le ici."); }
-    if (!res.ok) throw new Error("Le fichier n’a pas pu être récupéré.");
+    try { res = await fetch(u); } catch { throw new Error(t("Ton navigateur bloque la récupération : ce site refuse que d’autres pages lisent ses fichiers (protection « CORS »). Télécharge le fichier à la main puis dépose-le ici.")); }
+    if (!res.ok) throw new Error(t("Le fichier n’a pas pu être récupéré."));
     const type = (res.headers.get("content-type") || "").split(";")[0];
-    if (type.startsWith("text/html") || type.includes("json")) throw new Error("Ce lien ouvre une page, pas un fichier.");
+    if (type.startsWith("text/html") || type.includes("json")) throw new Error(t("Ce lien ouvre une page, pas un fichier."));
     const blob = await res.blob();
-    if (blob.size > 120 * 1048576) throw new Error("Fichier trop lourd (120 Mo maximum).");
+    if (blob.size > 120 * 1048576) throw new Error(t("Fichier trop lourd (120 Mo maximum)."));
     const last = decodeURIComponent(u.pathname.split("/").pop() || "");
-    return { name: last.includes(".") ? last.slice(0, 80) : "fichier", blob };
-  }) }, "Récupérer");
-  return sheet("Lien direct", "Récupère un fichier public à partir d’un lien qui se termine par .mp4, .mp3, .png, .pdf… Beaucoup de sites refusent : dans ce cas, télécharge le fichier à la main puis dépose-le dans la bibliothèque.",
-    field("Lien du fichier", link), btn, out);
+    return { name: last.includes(".") ? last.slice(0, 80) : "file", blob };
+  }, true) }, t("Récupérer"));
+  return sheet(t("Lien direct"), t("Colle un lien qui se termine par .mp4, .mp3, .png, .pdf… Si le site refuse, télécharge le fichier puis dépose-le."),
+    field(t("Lien du fichier"), link), btn, out);
 }
 
 function CompressPanel() {
   const Q = { haute: ["scale=-2:720", "23", "128k", "Haute · 720p"], standard: ["scale=-2:480", "28", "96k", "Standard · 480p"], legere: ["scale=-2:360", "32", "64k", "Légère · 360p"], mini: ["scale=-2:240", "36", "48k", "Mini · 240p"] };
   let q = "standard";
-  const p = singlePick("video/*", "Dépose une vidéo.", ["video"]);
+  const p = singlePick("video/*", t("Dépose une vidéo."), ["video"]);
   const out = h("div");
   const btn = h("button", { class: "btn", style: "margin-top:16px", onclick: () => {
-    const pick = p.state.pick; if (!pick) return out.replaceChildren(h("p", { class: "note err" }, "Choisis une vidéo."));
+    const pick = p.state.pick; if (!pick) return out.replaceChildren(h("p", { class: "note err" }, t("Choisis une vidéo.")));
     runTask(btn, out, async (st) => {
       const [scale, crf, ab] = Q[q]; const input = "in." + ext(pick.name, pick.blob.type, "mp4");
-      const blob = await ffRun([{ name: input, blob: pick.blob }], [["-i", input, "-vf", scale, "-c:v", "libx264", "-preset", "veryfast", "-crf", crf, "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", ab, "-movflags", "+faststart", "out.mp4"]], "out.mp4", "video/mp4", "Compression", st, "Le traitement a échoué. Essaie un mp4 ou un webm plus court.");
+      const blob = await ffRun([{ name: input, blob: pick.blob }], [["-i", input, "-vf", scale, "-c:v", "libx264", "-preset", "veryfast", "-crf", crf, "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", ab, "-movflags", "+faststart", "out.mp4"]], "out.mp4", "video/mp4", t("Compression"), st, t("Le traitement a échoué. Essaie un mp4 ou un webm plus court."));
       return { name: baseName(pick.name) + "-" + q + ".mp4", blob };
     });
-  } }, "Compresser");
-  return sheet("Compresser", "Quatre qualités, du plus net au plus léger. Le premier passage télécharge un moteur vidéo (environ 30 Mo). Préfère une vidéo courte.",
-    p.node, field("Qualité", select(Object.entries(Q).map(([k, v]) => [k, v[3]]), q, (v) => { q = v; })), btn, out);
+  } }, t("Compresser"));
+  return sheet(t("Compresser"), t("Quatre qualités, du plus net au plus léger. Le premier passage télécharge un moteur vidéo (environ 30 Mo)."),
+    p.node, field(t("Qualité"), select(Object.entries(Q).map(([k, v]) => [k, t(v[3])]), q, (v) => { q = v; })), btn, out);
 }
 
 function PdfPanel() {
-  const m = multiPick("image/*", "Dépose une ou plusieurs images.", ["image"], 16);
+  const m = multiPick("image/*", t("Dépose une ou plusieurs images."), ["image"], 16);
   const nm = nameField("images");
   const out = h("div");
   const btn = h("button", { class: "btn", style: "margin-top:16px", onclick: () => {
-    if (!m.state.items.length) return out.replaceChildren(h("p", { class: "note err" }, "Ajoute au moins une image."));
+    if (!m.state.items.length) return out.replaceChildren(h("p", { class: "note err" }, t("Ajoute au moins une image.")));
     runTask(btn, out, async (st) => {
-      st("Chargement de la bibliothèque PDF…");
+      st(t("Chargement de la bibliothèque PDF…"));
       await loadScript("https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js");
       const pdf = await PDFLib.PDFDocument.create();
       let n = 0;
       for (const it of m.state.items) {
-        st("Image " + (++n) + " / " + m.state.items.length);
+        st(t("Image {n} / {total}", { n: ++n, total: m.state.items.length }));
         let raw = new Uint8Array(await it.blob.arrayBuffer());
         const png = raw.length > 8 && raw[0] === 0x89 && raw[1] === 0x50, jpg = raw.length > 3 && raw[0] === 0xff && raw[1] === 0xd8;
         if (!png && !jpg) {
@@ -467,14 +758,14 @@ function PdfPanel() {
       }
       return { name: nm.get() + ".pdf", blob: new Blob([await pdf.save()], { type: "application/pdf" }) };
     });
-  } }, "Créer le PDF");
-  return sheet("Images en PDF", "Chaque image devient une page A4, dans l’ordre que tu choisis. Donne un nom au PDF avant de le créer.", m.node, nm.node, btn, out);
+  } }, t("Créer le PDF"));
+  return sheet(t("Images en PDF"), t("Chaque image devient une page A4, dans l’ordre choisi."), m.node, nm.node, btn, out);
 }
 
-const VOICES = [["fr-FR", "Français"], ["en-US", "Anglais (États-Unis)"], ["en-GB", "Anglais (Royaume-Uni)"], ["es-ES", "Espagnol"], ["de-DE", "Allemand"], ["it-IT", "Italien"], ["pt-BR", "Portugais"], ["nl-NL", "Néerlandais"], ["pl-PL", "Polonais"], ["tr-TR", "Turc"], ["ru-RU", "Russe"], ["ar-SA", "Arabe"], ["zh-CN", "Chinois"], ["ja-JP", "Japonais"], ["ko-KR", "Coréen"], ["sv-SE", "Suédois"]];
+const VOICES = [["fr-FR", "Français"], ["en-US", "English (US)"], ["en-GB", "English (UK)"], ["es-ES", "Español"], ["de-DE", "Deutsch"], ["it-IT", "Italiano"], ["pt-BR", "Português"], ["nl-NL", "Nederlands"], ["pl-PL", "Polski"], ["tr-TR", "Türkçe"], ["ru-RU", "Русский"], ["ar-SA", "العربية"], ["zh-CN", "中文"], ["ja-JP", "日本語"], ["ko-KR", "한국어"], ["sv-SE", "Svenska"]];
 function SpeakPanel() {
-  let lang = "fr-FR", rate = 1, voiceURI = "";
-  const ta = h("textarea", { maxlength: 5000, "aria-label": "Texte à lire" }, "Bonjour. Ceci est l’établi, un atelier pour tes fichiers.");
+  let lang = LANG === "fr" ? "fr-FR" : LANG === "es" ? "es-ES" : "en-US", rate = 1, voiceURI = "";
+  const ta = h("textarea", { maxlength: 5000, "aria-label": t("Texte à lire") }, t("Bonjour. Ceci est l’établi, un atelier pour tes fichiers."));
   const err = h("p", { class: "note err" });
   const voiceBox = h("div");
   const synth = window.speechSynthesis;
@@ -482,120 +773,120 @@ function SpeakPanel() {
   const drawVoices = () => {
     voiceBox.replaceChildren();
     const m = matching(); if (!m.length) return;
-    voiceBox.append(field("Voix", select([["", "Voix proposée"], ...m.map((v) => [v.voiceURI, v.name])], voiceURI, (v) => { voiceURI = v; })));
+    voiceBox.append(field(t("Voix"), select([["", t("Voix proposée")], ...m.map((v) => [v.voiceURI, v.name])], voiceURI, (v) => { voiceURI = v; })));
   };
   if (synth) { synth.onvoiceschanged = drawVoices; drawVoices(); }
   const speak = () => {
-    if (!synth) { err.textContent = "Ce navigateur ne lit pas le texte à voix haute."; return; }
+    if (!synth) { err.textContent = t("Ce navigateur ne lit pas le texte à voix haute."); return; }
     err.textContent = ""; synth.cancel();
     const u = new SpeechSynthesisUtterance(ta.value); u.lang = lang; u.rate = rate;
     const v = synth.getVoices().find((x) => x.voiceURI === voiceURI) || matching()[0]; if (v) u.voice = v;
-    u.onerror = () => { err.textContent = "La lecture a été interrompue."; };
+    u.onerror = () => { err.textContent = t("La lecture a été interrompue."); };
     synth.speak(u);
   };
-  const rl = h("span", null, "Débit 1.0");
-  return sheet("Lecture vocale", "Le texte est lu avec les voix de ton appareil. Choisis la langue, le débit, puis lance.",
-    ta, field("Langue", select(VOICES, lang, (v) => { lang = v; voiceURI = ""; drawVoices(); })), voiceBox,
-    h("label", { class: "f" }, rl, h("input", { type: "range", min: 0.7, max: 1.3, step: 0.1, value: 1, style: "width:100%", oninput: (e) => { rate = Number(e.target.value); rl.textContent = "Débit " + rate.toFixed(1); } })),
-    h("div", { class: "row" }, h("button", { class: "btn", onclick: speak }, "Lire"), h("button", { class: "ghost", onclick: () => synth && synth.cancel() }, "Stop")), err);
+  const rl = h("span", null, t("Débit {r}", { r: "1.0" }));
+  return sheet(t("Lecture"), t("Le texte est lu avec les voix de ton appareil."),
+    ta, field(t("Langue"), select(VOICES, lang, (v) => { lang = v; voiceURI = ""; drawVoices(); })), voiceBox,
+    h("label", { class: "f" }, rl, h("input", { type: "range", min: 0.7, max: 1.3, step: 0.1, value: 1, style: "width:100%", oninput: (e) => { rate = Number(e.target.value); rl.textContent = t("Débit {r}", { r: rate.toFixed(1) }); } })),
+    h("div", { class: "row" }, h("button", { class: "btn", onclick: speak }, t("Lire")), h("button", { class: "ghost", onclick: () => synth && synth.cancel() }, t("Stop"))), err);
 }
 
-const ASR = [["french", "Français"], ["english", "Anglais"], ["spanish", "Espagnol"], ["german", "Allemand"], ["italian", "Italien"], ["portuguese", "Portugais"], ["arabic", "Arabe"], ["dutch", "Néerlandais"], ["polish", "Polonais"], ["russian", "Russe"], ["chinese", "Chinois"], ["japanese", "Japonais"], ["", "Détecter"]];
+const ASR = [["french", "Français"], ["english", "English"], ["spanish", "Español"], ["german", "Deutsch"], ["italian", "Italiano"], ["portuguese", "Português"], ["arabic", "العربية"], ["dutch", "Nederlands"], ["polish", "Polski"], ["russian", "Русский"], ["chinese", "中文"], ["japanese", "日本語"], ["", "—"]];
 let asrModel = null;
 function getAsr(st) {
   if (!asrModel) asrModel = (async () => {
-    st("Chargement du modèle de transcription…");
+    st(t("Chargement du modèle de transcription…"));
     const mod = await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.3.1/+esm");
     mod.env.allowLocalModels = false;
     return mod.pipeline("automatic-speech-recognition", "onnx-community/whisper-tiny", { dtype: "q8", device: "wasm",
-      progress_callback: (i) => { if (i.status === "progress" && typeof i.progress === "number") st("Modèle… " + Math.round(i.progress) + " %"); } });
+      progress_callback: (i) => { if (i.status === "progress" && typeof i.progress === "number") st(t("Modèle… {p} %", { p: Math.round(i.progress) })); } });
   })().catch((e) => { asrModel = null; throw e; });
   return asrModel;
 }
 function TranscribePanel() {
-  let mode = "mic", language = "french", micLang = "fr-FR", rec = null;
+  const baseLang = LANG === "fr" ? "french" : LANG === "es" ? "spanish" : "english";
+  let mode = "mic", language = baseLang, micLang = LANG === "fr" ? "fr-FR" : LANG === "es" ? "es-ES" : "en-US", rec = null;
   const body = h("div"), out = h("div"), status = h("p", { class: "note" });
   const tabs = h("div", { class: "row", style: "margin-top:0" });
-  const httpsHint = location.protocol === "https:" || location.hostname === "localhost" ? null
-    : h("p", { class: "warn" }, "Cette page est ouverte depuis un fichier : le micro y est refusé par le navigateur. Pour l’activer, mets etabli.html en ligne en https (par exemple en le glissant sur Netlify Drop, ou via GitHub Pages) et ouvre le lien obtenu.");
-  const p = singlePick("audio/*,video/*", "Dépose un audio court, ou une vidéo dont on prendra le son.", ["audio", "video"]);
-  const micBtn = h("button", { class: "btn", style: "margin-top:16px" }, "Écouter");
+  const p = singlePick("audio/*,video/*", t("Dépose un audio court, ou une vidéo dont on prendra le son."), ["audio", "video"]);
+  const micBtn = h("button", { class: "btn", style: "margin-top:16px" }, t("Écouter"));
   let listening = false;
   micBtn.onclick = () => {
     status.className = "note"; status.textContent = "";
     if (listening) { rec && rec.stop(); return; }
     const C = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!C) { status.className = "note err"; status.textContent = "Ce navigateur ne propose pas la dictée. Utilise Chrome, ou un fichier audio."; return; }
+    if (!C) { status.className = "note err"; status.textContent = t("Ce navigateur ne propose pas la dictée. Utilise Chrome, ou un fichier audio."); return; }
     rec = new C(); rec.lang = micLang; rec.continuous = true; rec.interimResults = true;
-    rec.onresult = (e) => { let t = ""; for (let i = 0; i < e.results.length; i++) t += e.results[i][0].transcript; out.replaceChildren(); textResult(t.trim(), "transcription.txt", out); };
-    const reset = () => { listening = false; micBtn.textContent = "Écouter"; };
+    rec.onresult = (e) => { let x = ""; for (let i = 0; i < e.results.length; i++) x += e.results[i][0].transcript; out.replaceChildren(); textResult(x.trim(), "transcript.txt", out); };
+    const reset = () => { listening = false; micBtn.textContent = t("Écouter"); };
     rec.onerror = (e) => {
       reset(); status.className = "note err";
       status.textContent = (e.error === "not-allowed" || e.error === "service-not-allowed")
-        ? "Le micro est bloqué. " + (/^https:$/.test(location.protocol) ? "Autorise-le dans les réglages du site (cadenas dans la barre d’adresse)." : "Cette page n’est pas en https (elle est ouverte depuis un fichier) : le navigateur refuse alors de demander l’autorisation. Héberge le fichier en https (voir l’aide ci-dessous) ou utilise l’onglet Fichier.")
-        : e.error === "no-speech" ? "Aucun son détecté." : e.error === "network" ? "La dictée a besoin d’internet." : "La dictée s’est arrêtée.";
+        ? (location.protocol === "https:" ? t("Le micro est bloqué. Autorise-le dans les réglages du site (cadenas dans la barre d’adresse).") : t("Le micro est bloqué. Cette page est ouverte depuis un fichier (pas en https) : le navigateur refuse de demander l’autorisation. Mets la page en ligne en https ou utilise l’onglet Fichier."))
+        : e.error === "no-speech" ? t("Aucun son détecté.") : e.error === "network" ? t("La dictée a besoin d’internet.") : t("La dictée s’est arrêtée.");
     };
     rec.onend = reset;
-    try { rec.start(); listening = true; micBtn.textContent = "Arrêter"; status.textContent = "Écoute…"; }
-    catch { reset(); status.className = "note err"; status.textContent = "La dictée n’a pas pu démarrer."; }
+    try { rec.start(); listening = true; micBtn.textContent = t("Arrêter"); status.textContent = t("Écoute…"); }
+    catch { reset(); status.className = "note err"; status.textContent = t("La dictée n’a pas pu démarrer."); }
   };
   const fileBtn = h("button", { class: "btn", style: "margin-top:16px", onclick: async () => {
-    const pick = p.state.pick; if (!pick) { status.className = "note err"; status.textContent = "Choisis un fichier."; return; }
+    const pick = p.state.pick; if (!pick) { status.className = "note err"; status.textContent = t("Choisis un fichier."); return; }
+    if (!(await gate())) return;
     fileBtn.disabled = true; out.replaceChildren(); status.className = "note";
     try {
-      try { const ctx = new AudioContext(); const d = await ctx.decodeAudioData(await pick.blob.arrayBuffer()); await ctx.close(); if (d.duration > 90) throw new Error("Le fichier dépasse 90 secondes. Coupe-le, ou utilise la dictée au micro."); }
-      catch (e) { if (/90 secondes/.test(msg(e))) throw e; }
-      const asr = await getAsr((t) => { status.textContent = t; });
-      status.textContent = "Transcription…";
+      try { const ctx = new AudioContext(); const d = await ctx.decodeAudioData(await pick.blob.arrayBuffer()); await ctx.close(); if (d.duration > 90) throw new Error("TOO_LONG"); }
+      catch (e) { if (e.message === "TOO_LONG") throw new Error(t("Le fichier dépasse 90 secondes. Coupe-le, ou utilise la dictée au micro.")); }
+      const asr = await getAsr((x) => { status.textContent = x; });
+      status.textContent = t("Transcription…");
       const url = URL.createObjectURL(pick.blob);
       let res; try { res = await asr(url, { task: "transcribe", chunk_length_s: 30, stride_length_s: 5, ...(language ? { language } : {}) }); } finally { URL.revokeObjectURL(url); }
-      const text = (res.text || "").trim(); if (!text) throw new Error("Aucun mot reconnu.");
-      textResult(text, "transcription.txt", out); status.textContent = "Terminé. Le son n’a pas quitté cet onglet.";
+      const text = (res.text || "").trim(); if (!text) throw new Error(t("Aucun mot reconnu."));
+      textResult(text, "transcript.txt", out); status.textContent = t("Terminé. Le son n’a pas quitté cet onglet."); spend();
     } catch (e) { status.className = "note err"; status.textContent = msg(e); }
     finally { fileBtn.disabled = false; }
-  } }, "Transcrire");
+  } }, t("Transcrire le fichier"));
   const draw = () => {
-    tabs.replaceChildren(...[["mic", "Micro"], ["file", "Fichier"]].map(([id, l]) => h("button", { class: "pill" + (mode === id ? " on" : ""), onclick: () => { mode = id; draw(); } }, l)));
+    tabs.replaceChildren(...[["mic", t("Micro")], ["file", t("Fichier")]].map(([id, l]) => h("button", { class: "pill" + (mode === id ? " on" : ""), onclick: () => { mode = id; draw(); } }, l)));
     body.replaceChildren(...(mode === "mic"
-      ? [field("Langue", select(VOICES, micLang, (v) => { micLang = v; })), micBtn]
-      : [h("div", { style: "margin-top:14px" }, p.node), field("Langue du fichier", select(ASR, language, (v) => { language = v; })), fileBtn]));
+      ? [field(t("Langue"), select(VOICES, micLang, (v) => { micLang = v; })), micBtn]
+      : [h("div", { style: "margin-top:14px" }, p.node), field(t("Langue du fichier"), select(ASR.map(([v, l]) => [v, v ? l : t("Détecter")]), language, (v) => { language = v; })), fileBtn]));
   };
   draw();
-  return sheet("Transcrire", "La dictée passe par le service de ton navigateur (Chrome recommandé). Un fichier audio est transcrit dans l’onglet après le téléchargement d’un petit modèle (90 secondes maximum).", tabs, body, status, out, httpsHint);
+  return sheet(t("Transcrire"), t("La dictée utilise le service de ton navigateur (Chrome conseillé). Un fichier est transcrit sur l’appareil (90 secondes maximum)."), tabs, body, status, out);
 }
 
 function ExtractPanel() {
-  const p = singlePick("video/*,audio/*", "Dépose une vidéo.", ["video", "audio"]);
+  const p = singlePick("video/*,audio/*", t("Dépose une vidéo."), ["video", "audio"]);
   const out = h("div");
   const btn = h("button", { class: "btn", style: "margin-top:16px", onclick: () => {
-    const pick = p.state.pick; if (!pick) return out.replaceChildren(h("p", { class: "note err" }, "Choisis une vidéo."));
+    const pick = p.state.pick; if (!pick) return out.replaceChildren(h("p", { class: "note err" }, t("Choisis une vidéo.")));
     runTask(btn, out, async (st) => {
       const input = "in." + ext(pick.name, pick.blob.type, "mp4");
       try {
-        const blob = await ffRun([{ name: input, blob: pick.blob }], [["-i", input, "-vn", "-c:a", "libmp3lame", "-q:a", "5", "out.mp3"]], "out.mp3", "audio/mpeg", "Extraction", st, "mp3 impossible");
+        const blob = await ffRun([{ name: input, blob: pick.blob }], [["-i", input, "-vn", "-c:a", "libmp3lame", "-q:a", "5", "out.mp3"]], "out.mp3", "audio/mpeg", t("Extraction"), st, "mp3");
         return { name: baseName(pick.name) + ".mp3", blob };
       } catch (e) {
-        if (/moteur vidéo/.test(msg(e))) throw e;
-        st("Le mp3 a échoué, passage en wav…");
-        const blob = await ffRun([{ name: input, blob: pick.blob }], [["-i", input, "-vn", "-c:a", "pcm_s16le", "out.wav"]], "out.wav", "audio/wav", "Extraction", st, "Impossible d’extraire le son de ce fichier.");
+        if (e.message !== "mp3") throw e;
+        st(t("Le mp3 a échoué, passage en wav…"));
+        const blob = await ffRun([{ name: input, blob: pick.blob }], [["-i", input, "-vn", "-c:a", "pcm_s16le", "out.wav"]], "out.wav", "audio/wav", t("Extraction"), st, t("Impossible d’extraire le son de ce fichier."));
         return { name: baseName(pick.name) + ".wav", blob };
       }
     });
-  } }, "Extraire");
-  return sheet("Extraire le son", "Garde uniquement la piste audio d’une vidéo, en mp3 quand c’est possible.", p.node, btn, out);
+  } }, t("Extraire"));
+  return sheet(t("Extraire le son"), t("Garde seulement le son d’une vidéo, en mp3 si possible."), p.node, btn, out);
 }
 
 function CollagePanel() {
   let dir = "h", gap = 16, bg = "#fffcf7";
-  const m = multiPick("image/*", "Dépose les images à assembler.", ["image"], 12);
+  const m = multiPick("image/*", t("Dépose les images à assembler."), ["image"], 12);
   const nm = nameField("collage");
   const out = h("div");
   const dirBtns = h("div", { class: "row" });
-  const drawDir = () => dirBtns.replaceChildren(...[["h", "Horizontal"], ["v", "Vertical"]].map(([id, l]) => h("button", { class: "pill" + (dir === id ? " on" : ""), onclick: () => { dir = id; drawDir(); } }, l)));
+  const drawDir = () => dirBtns.replaceChildren(...[["h", t("Horizontal")], ["v", t("Vertical")]].map(([id, l]) => h("button", { class: "pill" + (dir === id ? " on" : ""), onclick: () => { dir = id; drawDir(); } }, l)));
   drawDir();
-  const gl = h("span", null, "Espace 16");
+  const gl = h("span", null, t("Espace {g}", { g: 16 }));
   const btn = h("button", { class: "btn", style: "margin-top:16px", onclick: () => {
-    if (!m.state.items.length) return out.replaceChildren(h("p", { class: "note err" }, "Ajoute au moins une image."));
+    if (!m.state.items.length) return out.replaceChildren(h("p", { class: "note err" }, t("Ajoute au moins une image.")));
     runTask(btn, out, async () => {
       const bms = await Promise.all(m.state.items.map((i) => createImageBitmap(i.blob)));
       const gt = gap * Math.max(0, bms.length - 1);
@@ -607,42 +898,42 @@ function CollagePanel() {
       let x = 0, y = 0;
       for (const b of bms) { if (dir === "h") { ctx.drawImage(b, x, (H - b.height) / 2); x += b.width + gap; } else { ctx.drawImage(b, (W - b.width) / 2, y); y += b.height + gap; } b.close(); }
       const blob = await new Promise((r) => c.toBlob(r, "image/png"));
-      if (!blob) throw new Error("Le collage est vide.");
+      if (!blob) throw new Error(t("Le collage est vide."));
       return { name: nm.get() + ".png", blob };
     });
-  } }, "Assembler");
-  return sheet("Collage", "Aligne les images sur une ligne ou en colonne, avec un espace et un fond.", m.node, nm.node, dirBtns,
-    field("Fond", select([["#fffcf7", "Papier clair"], ["#f3eee6", "Papier"], ["#1b1916", "Encre"]], bg, (v) => { bg = v; })),
-    h("label", { class: "f" }, gl, h("input", { type: "range", min: 0, max: 48, step: 4, value: 16, style: "width:100%", oninput: (e) => { gap = Number(e.target.value); gl.textContent = "Espace " + gap; } })), btn, out);
+  } }, t("Assembler"));
+  return sheet(t("Collage"), t("Aligne les images en ligne ou en colonne."), m.node, nm.node, dirBtns,
+    field(t("Fond"), select([["#fffcf7", t("Papier clair")], ["#f3eee6", t("Papier")], ["#1b1916", t("Encre")]], bg, (v) => { bg = v; })),
+    h("label", { class: "f" }, gl, h("input", { type: "range", min: 0, max: 48, step: 4, value: 16, style: "width:100%", oninput: (e) => { gap = Number(e.target.value); gl.textContent = t("Espace {g}", { g: gap }); } })), btn, out);
 }
 
 function MuxPanel() {
-  const v = singlePick("video/*", "Dépose la vidéo.", ["video"]);
-  const a = singlePick("audio/*", "Dépose le son.", ["audio"]);
-  const nm = nameField("video-avec-son");
+  const v = singlePick("video/*", t("Dépose la vidéo."), ["video"]);
+  const a = singlePick("audio/*", t("Dépose le son."), ["audio"]);
+  const nm = nameField("video-audio");
   const out = h("div");
   const btn = h("button", { class: "btn", style: "margin-top:16px", onclick: () => {
     const vp = v.state.pick, ap = a.state.pick;
-    if (!vp || !ap) return out.replaceChildren(h("p", { class: "note err" }, "Choisis une vidéo et un son."));
+    if (!vp || !ap) return out.replaceChildren(h("p", { class: "note err" }, t("Choisis une vidéo et un son.")));
     runTask(btn, out, async (st) => {
       const vn = "video." + ext(vp.name, vp.blob.type, "mp4"), an = "audio." + ext(ap.name, ap.blob.type, "mp3");
       const blob = await ffRun([{ name: vn, blob: vp.blob }, { name: an, blob: ap.blob }],
         [["-i", vn, "-i", an, "-map", "0:v:0", "-map", "1:a:0", "-c:v", "libx264", "-preset", "veryfast", "-crf", "23", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k", "-shortest", "out.mp4"]],
-        "out.mp4", "video/mp4", "Assemblage", st, "Impossible de réunir ces deux fichiers. Vérifie qu’il y a bien une image et un son.");
+        "out.mp4", "video/mp4", t("Assemblage"), st, t("Impossible de réunir ces deux fichiers. Vérifie qu’il y a bien une image et un son."));
       return { name: nm.get() + ".mp4", blob };
     });
-  } }, "Réunir");
-  return sheet("Son et vidéo", "Pose une piste audio sur une vidéo. Le son d’origine est remplacé. La durée suit le plus court des deux.",
-    h("p", { style: "font-weight:500;margin:0" }, "Vidéo"), v.node, h("p", { style: "font-weight:500;margin:20px 0 0" }, "Son"), a.node, nm.node, btn, out);
+  } }, t("Réunir"));
+  return sheet(t("Son + vidéo"), t("Pose un son sur une vidéo. Le son d’origine est remplacé."),
+    h("p", { style: "font-weight:500;margin:0" }, t("Vidéo")), v.node, h("p", { style: "font-weight:500;margin:20px 0 0" }, t("Audio")), a.node, nm.node, btn, out);
 }
 
 function JoinPanel() {
   let kind = "audio";
   const holder = h("div"), tabs = h("div", { class: "row", style: "margin-top:0" }), out = h("div");
-  const nm = nameField("assemblage");
+  const nm = nameField("clips");
   let m = null;
   const btn = h("button", { class: "btn", style: "margin-top:16px", onclick: () => {
-    if (!m || m.state.items.length < 2) return out.replaceChildren(h("p", { class: "note err" }, "Ajoute au moins deux fichiers."));
+    if (!m || m.state.items.length < 2) return out.replaceChildren(h("p", { class: "note err" }, t("Ajoute au moins deux fichiers.")));
     const k = kind, items = m.state.items.slice();
     runTask(btn, out, async (st) => {
       const names = items.map((it, i) => "part" + i + "." + ext(it.name, it.blob.type, k === "audio" ? "mp3" : "mp4"));
@@ -653,7 +944,7 @@ function JoinPanel() {
       const files = items.map((it, i) => ({ name: names[i], blob: it.blob }));
       if (k === "audio") {
         const f = aPrep.join(";") + ";" + names.map((_, i) => `[a${i}]`).join("") + `concat=n=${N}:v=0:a=1[a]`;
-        const blob = await ffRun(files, [[...inputs, "-filter_complex", f, "-map", "[a]", "-c:a", "libmp3lame", "-q:a", "4", "out.mp3"]], "out.mp3", "audio/mpeg", "Assemblage", st, "Impossible de réunir ces sons. Vérifie que ce sont bien des fichiers audio.");
+        const blob = await ffRun(files, [[...inputs, "-filter_complex", f, "-map", "[a]", "-c:a", "libmp3lame", "-q:a", "4", "out.mp3"]], "out.mp3", "audio/mpeg", t("Assemblage"), st, t("Impossible de réunir ces sons. Vérifie que ce sont bien des fichiers audio."));
         return { name: nm.get() + ".mp3", blob };
       }
       const withA = [...vPrep, ...aPrep, names.map((_, i) => `[v${i}][a${i}]`).join("") + `concat=n=${N}:v=1:a=1[v][a]`].join(";");
@@ -662,42 +953,43 @@ function JoinPanel() {
       const blob = await ffRun(files, [
         [...inputs, "-filter_complex", withA, "-map", "[v]", "-map", "[a]", ...enc, "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", "out.mp4"],
         [...inputs, "-filter_complex", noA, "-map", "[v]", ...enc, "-movflags", "+faststart", "out.mp4"],
-      ], "out.mp4", "video/mp4", "Assemblage", st, "Impossible de réunir ces vidéos. Essaie des fichiers plus courts.");
+      ], "out.mp4", "video/mp4", t("Assemblage"), st, t("Impossible de réunir ces vidéos. Essaie des fichiers plus courts."));
       return { name: nm.get() + ".mp4", blob };
     });
-  } }, "Réunir");
+  } }, t("Réunir"));
   const draw = () => {
     if (m) m.clear();
-    m = multiPick(kind === "audio" ? "audio/*" : "video/*", kind === "audio" ? "Dépose au moins deux sons." : "Dépose au moins deux vidéos.", [kind], 10);
-    tabs.replaceChildren(...[["audio", "Sons"], ["video", "Vidéos"]].map(([id, l]) => h("button", { class: "pill" + (kind === id ? " on" : ""), onclick: () => { kind = id; out.replaceChildren(); draw(); } }, l)));
+    m = multiPick(kind === "audio" ? "audio/*" : "video/*", kind === "audio" ? t("Dépose au moins deux sons.") : t("Dépose au moins deux vidéos."), [kind], 10);
+    tabs.replaceChildren(...[["audio", t("Sons")], ["video", t("Vidéos")]].map(([id, l]) => h("button", { class: "pill" + (kind === id ? " on" : ""), onclick: () => { kind = id; out.replaceChildren(); draw(); } }, l)));
     holder.replaceChildren(h("div", { style: "margin-top:14px" }, m.node));
   };
   draw();
-  return sheet("Mettre bout à bout", "Réunis plusieurs sons, ou plusieurs vidéos, dans l’ordre choisi. Les vidéos sont mises au format 1280×720. Préfère des fichiers courts.", tabs, holder, nm.node, btn, out);
+  return sheet(t("Bout à bout"), t("Réunis plusieurs sons ou vidéos dans l’ordre choisi. Les vidéos passent en 1280×720."), tabs, holder, nm.node, btn, out);
 }
 
-const OCR = [["fra+eng", "Français + anglais"], ["fra", "Français"], ["eng", "Anglais"], ["spa", "Espagnol"], ["deu", "Allemand"], ["ita", "Italien"], ["por", "Portugais"], ["ara", "Arabe"], ["rus", "Russe"]];
+const OCR = [["fra+eng", "Français + English"], ["fra", "Français"], ["eng", "English"], ["spa", "Español"], ["deu", "Deutsch"], ["ita", "Italiano"], ["por", "Português"], ["ara", "العربية"], ["rus", "Русский"]];
 async function makeOcr(lang, st) {
   await loadScript("https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js");
-  return Tesseract.createWorker(lang, 1, { logger: (m) => { if (m.status === "recognizing text") st("Lecture… " + Math.round((m.progress || 0) * 100) + " %"); else if (m.status) st("Préparation de la lecture…"); } });
+  return Tesseract.createWorker(lang, 1, { logger: (m) => { if (m.status === "recognizing text") st(t("Lecture… {p} %", { p: Math.round((m.progress || 0) * 100) })); else if (m.status) st(t("Préparation de la lecture…")); } });
 }
 function OcrPanel() {
-  let lang = "fra+eng";
-  const m = multiPick("image/*,.pdf,application/pdf", "Dépose une image, plusieurs images, ou un PDF.", ["image", "pdf"], 8);
+  let lang = LANG === "es" ? "spa" : LANG === "en" ? "eng" : "fra+eng";
+  const m = multiPick("image/*,.pdf,application/pdf", t("Dépose une image, plusieurs images, ou un PDF."), ["image", "pdf"], 8);
   const out = h("div"), status = h("p", { class: "note" });
   const isPdf = (it) => it.blob.type === "application/pdf" || it.name.toLowerCase().endsWith(".pdf");
   const btn = h("button", { class: "btn", style: "margin-top:16px", onclick: async () => {
     const items = m.state.items.slice();
-    if (!items.length) { status.className = "note err"; status.textContent = "Ajoute une image ou un PDF."; return; }
+    if (!items.length) { status.className = "note err"; status.textContent = t("Ajoute une image ou un PDF."); return; }
+    if (!(await gate())) return;
     btn.disabled = true; out.replaceChildren(); status.className = "note";
-    const st = (t) => { status.textContent = t; };
+    const st = (x) => { status.textContent = x; };
     try {
       let text = "";
       const pdfs = items.filter(isPdf), imgs = items.filter((i) => !isPdf(i));
-      if (pdfs.length && imgs.length) throw new Error("Choisis soit un PDF, soit des images, pas les deux.");
-      if (pdfs.length > 1) throw new Error("Un seul PDF à la fois.");
+      if (pdfs.length && imgs.length) throw new Error(t("Choisis soit un PDF, soit des images, pas les deux."));
+      if (pdfs.length > 1) throw new Error(t("Un seul PDF à la fois."));
       if (pdfs.length) {
-        st("Ouverture du PDF…");
+        st(t("Ouverture du PDF…"));
         const V = "3.11.174";
         await loadScript(`https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${V}/pdf.min.js`);
         const wtxt = await (await fetch(`https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${V}/pdf.worker.min.js`)).text();
@@ -705,37 +997,56 @@ function OcrPanel() {
         const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(await pdfs[0].blob.arrayBuffer()) }).promise;
         const count = Math.min(pdf.numPages, 8), slots = [], scans = [];
         for (let i = 1; i <= count; i++) {
-          st("Page " + i + " / " + count);
+          st(t("Page {i} / {count}", { i, count }));
           const page = await pdf.getPage(i);
-          const t = (await page.getTextContent()).items.map((x) => (typeof x.str === "string" ? x.str : "")).join(" ").replace(/\s+/g, " ").trim();
-          if (t.length >= 24) slots[i - 1] = count > 1 ? `— Page ${i} —\n${t}` : t;
+          const tx = (await page.getTextContent()).items.map((x) => (typeof x.str === "string" ? x.str : "")).join(" ").replace(/\s+/g, " ").trim();
+          if (tx.length >= 24) slots[i - 1] = count > 1 ? `${t("— Page {i} —", { i })}\n${tx}` : tx;
           else { const vp = page.getViewport({ scale: 1.8 }); const c = h("canvas"); c.width = Math.ceil(vp.width); c.height = Math.ceil(vp.height); await page.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise; scans.push({ i, c }); }
         }
         if (scans.length) {
-          st("Reconnaissance des pages scannées…");
+          st(t("Reconnaissance des pages scannées…"));
           const w = await makeOcr(lang, st);
-          try { for (const s of scans) { st("Scan de la page " + s.i); const r = await w.recognize(s.c); const t = r.data.text.trim(); if (t) slots[s.i - 1] = count > 1 ? `— Page ${s.i} —\n${t}` : t; } } finally { await w.terminate(); }
+          try { for (const s of scans) { st(t("Scan de la page {i}", { i: s.i })); const r = await w.recognize(s.c); const tx = r.data.text.trim(); if (tx) slots[s.i - 1] = count > 1 ? `${t("— Page {i} —", { i: s.i })}\n${tx}` : tx; } } finally { await w.terminate(); }
         }
-        if (pdf.numPages > 8) slots.push("Seules les 8 premières pages ont été lues.");
+        if (pdf.numPages > 8) slots.push(t("Seules les 8 premières pages ont été lues."));
         text = slots.filter(Boolean).join("\n\n").trim();
       } else {
         const w = await makeOcr(lang, st);
         try {
           const parts = [];
-          for (let i = 0; i < imgs.length; i++) { if (imgs.length > 1) st(`Image ${i + 1} / ${imgs.length}`); const r = await w.recognize(imgs[i].blob); const t = r.data.text.trim(); if (t) parts.push(imgs.length > 1 ? `— Image ${i + 1} —\n${t}` : t); }
+          for (let i = 0; i < imgs.length; i++) { if (imgs.length > 1) st(t("Image {i} / {n}", { i: i + 1, n: imgs.length })); const r = await w.recognize(imgs[i].blob); const tx = r.data.text.trim(); if (tx) parts.push(imgs.length > 1 ? `${t("— Image {i} —", { i: i + 1 })}\n${tx}` : tx); }
           text = parts.join("\n\n").trim();
         } finally { await w.terminate(); }
       }
-      if (!text) throw new Error("Aucun texte repéré. Essaie une image plus nette, ou une autre langue.");
-      textResult(text, "scan.txt", out); st("Lecture terminée.");
+      if (!text) throw new Error(t("Aucun texte repéré. Essaie une image plus nette, ou une autre langue."));
+      textResult(text, "scan.txt", out); st(t("Lecture terminée.")); spend();
     } catch (e) { status.className = "note err"; status.textContent = msg(e); }
     finally { btn.disabled = false; }
-  } }, "Lire le texte");
-  return sheet("Scanner le texte", "Lis le texte d’une image, de plusieurs images, ou d’un PDF. Si le PDF contient déjà du texte, il est repris directement ; les pages-photos passent par la reconnaissance. Huit pages maximum.",
-    m.node, field("Langue", select(OCR, lang, (v) => { lang = v; })), btn, status, out);
+  } }, t("Lire le texte"));
+  return sheet(t("Scanner"), t("Lis le texte d’images ou d’un PDF (8 pages maximum)."), m.node, field(t("Langue"), select(OCR, lang, (v) => { lang = v; })), btn, status, out);
 }
 
-/* ---------- navigation ---------- */
+function PremiumPanel() {
+  let choice = "year";
+  const s = readPlan();
+  const body = h("div");
+  const draw = () => {
+    const now = readPlan();
+    body.replaceChildren(...[
+      h("p", { class: "note ok", style: "margin-top:0" }, now.premium ? t("Premium actif.") : t("Version gratuite : {n} utilisations aujourd’hui.", { n: FREE_DAILY + now.bonus })),
+      h("ul", { class: "feat" }, h("li", null, t("Aucune publicité")), h("li", null, t("Utilisations illimitées"))),
+      now.premium ? h("button", { class: "ghost", style: "margin-top:16px", onclick: () => { const p = readPlan(); p.premium = false; writePlan(p); refreshPlan(); draw(); } }, t("Revenir à la version gratuite"))
+        : [h("div", { class: "plans" },
+            [["month", t("Mensuel"), t("{p} / mois", { p: "4,99 €" })], ["year", t("Annuel"), t("{p} / an", { p: "39,99 €" })]].map(([id, label, price]) =>
+              h("button", { class: "plan" + (choice === id ? " on" : ""), type: "button", onclick: () => { choice = id; draw(); } }, h("b", null, label), h("small", null, price)))),
+           h("button", { class: "btn", style: "margin-top:16px", onclick: () => { const p = readPlan(); p.premium = true; writePlan(p); refreshPlan(); draw(); } }, t("Activer Premium (démo)"))],
+      h("p", { class: "warn" }, t("Mode démo : aucun paiement réel n’est branché. Ce bouton active simplement Premium sur cet appareil pour tester l’affichage."))].flat());
+  };
+  draw();
+  return sheet(t("Premium"), t("Retire les pubs et les limites."), body);
+}
+
+/* ============ Navigation ============ */
 const TOOLS = [
   ["library", "Bibliothèque", "Tes fichiers", LibraryPanel],
   ["browser", "Navigateur", "Consulter une page", BrowserPanel],
@@ -750,18 +1061,29 @@ const TOOLS = [
   ["mux", "Son + vidéo", "Réunir les deux", MuxPanel],
   ["join", "Bout à bout", "Sons ou vidéos", JoinPanel],
   ["ocr", "Scanner", "Image ou PDF", OcrPanel],
+  ["premium", "Premium", "Sans pubs ni limites", PremiumPanel],
 ];
 let currentTool = "library";
+function renderHeader() {
+  document.documentElement.lang = LANG;
+  const sel = h("select", { class: "langsel", "aria-label": t("Langue"), onchange: (e) => { LANG = e.target.value; store.set("etabli-lang", LANG); renderHeader(); show(currentTool); } },
+    Object.entries(LANGS).map(([k, v]) => h("option", { value: k }, v)));
+  sel.value = LANG;
+  document.getElementById("head").replaceChildren(
+    h("div", null, h("div", { class: "brand" }, "Établi"), h("div", { class: "sub" }, t("Atelier média"))),
+    h("div", { class: "ctrl" }, sel, h("button", { class: "planpill", id: "planpill", onclick: () => show("premium") })));
+  refreshPlan();
+}
 function show(id) {
   currentTool = id;
-  const tool = TOOLS.find((t) => t[0] === id) || TOOLS[0];
+  const tool = TOOLS.find((x) => x[0] === id) || TOOLS[0];
   if (window.speechSynthesis) window.speechSynthesis.cancel();
-  const main = document.getElementById("main");
-  main.replaceChildren(tool[3]());
+  document.getElementById("main").replaceChildren(tool[3]());
   document.getElementById("nav").replaceChildren(...TOOLS.map(([tid, label, hint]) =>
-    h("button", { type: "button", "aria-current": tid === id ? "page" : null, onclick: () => show(tid) }, h("span", null, label), h("small", null, hint))));
+    h("button", { type: "button", "aria-current": tid === id ? "page" : null, onclick: () => show(tid) }, h("span", null, t(label)), h("small", null, tid === "library" ? countText() : t(hint)))));
   window.scrollTo(0, 0);
 }
+renderHeader();
 show("library");
 </script>
 </body>
